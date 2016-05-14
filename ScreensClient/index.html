@@ -1,0 +1,44 @@
+﻿<!DOCTYPE html>
+<!--<html xmlns="http://www.w3.org/1999/xhtml" ng-app="vocApp">-->
+<html xmlns="http://www.w3.org/1999/xhtml" ng-app="screenApp"> <!--manifest="vocapp.appcache">-->
+<head>
+    <title>Vocabulary</title>
+
+    <link rel="stylesheet" href="Css/bootstrap.css" />
+
+    <link rel="stylesheet" href="Css/ak.css" />
+
+    <!--Angular stuff-->
+    <script src="Scripts/angular.js"></script>
+
+    <!--Main code App-->
+    <script src="app/appBootAngular.js"></script>
+
+    <script src="app/Services/dataService.js"></script>
+
+    <script src="app/Controllers/mainController.js"></script>
+
+    <script src="app/filters.js"></script>
+
+
+</head>
+<body ng-controller="mainController">
+    <div class="panel panel-info" ng-show="screenNo==1">
+        <div class="panel-heading">
+            <h3>Files {{screenNo}}</h3>
+        </div>
+        <div class="panel-body">
+        </div>
+    </div>
+
+    <div class="panel panel-success" ng-show="screenNo==10">
+        <div class="panel-heading">
+            <h3>other</h3>
+        </div>
+        <div class="panel-body">
+        </div>
+    </div>
+
+
+</body>
+</html>
