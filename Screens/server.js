@@ -5,7 +5,6 @@ var port = process.env.port || 1337;
 
 
 var databaseFolder = __dirname + '\\database\\';
-var fileDataFile = databaseFolder + 'files';
 
 //var files = {};
 
@@ -92,62 +91,92 @@ function crudDeleteFunctionFactory(filename) {
 	}
 }
 
-// CRUD functions
+// routing
+// =======
+
+var defaultRouteCmd = 'files';
+
+function getRouteInfo(parsedUrl) {
+    var path = parsedUrl.path.substring(1);
+    var cmd = '';
+    var id = '';
+    var pathParts = path.split('/');
+    if (pathParts.length === 0) {
+        cmd = defaultRouteCmd;
+    } else {
+        cmd = pathParts[0];
+        if (cmd === '') {
+            cmd = defaultRouteCmd;
+        }
+        if (pathParts.length > 1) {
+            id = pathParts[1];
+        }
+    }
+
+    return {
+        cmd: cmd,
+        id: id,
+        getFileName: function() {
+            return databaseFolder + cmd;
+        }
+    };
+}
+
+// helper methods
 // ===============
 
-var dbCreateFileObject = crudCreateFunctionFactory(fileDataFile);
-var dbReadFileObject = crudReadFunctionFactory(fileDataFile);
-var dbReadAllFileObjects = crudReadAllFunctionFactory(fileDataFile);
-var dbUpdateFileObject = crudUpdateFunctionFactory(fileDataFile);
-var dbDeleteFileObject = crudDeleteFunctionFactory(fileDataFile);
+function collectAllData(req, cb) {
+    var item = '';
+    req.setEncoding('utf8');
 
-
+    req.on('data', function (chunk) {
+        item += chunk;
+    });
+    req.on('end', function () {
+        cb(item);
+    });
+}
 
 http.createServer(function (req, res) {
-    var item = '';
-    var queryObject = url.parse(req.url, true).query;
+    var routeInfo = getRouteInfo(url.parse(req.url, true));
+
 	switch (req.method) {
-		case 'POST':			
-			req.setEncoding('utf8');
-			req.on('data', function (chunk) {
-				item += chunk;
-			});
-			req.on('end', function () {
-				dbCreateFileObject(item, function(newid) {
-                    console.log('new id: ' + newid);
-                    res.end('OK\n');
-				});			    
-            });
+        case 'POST':
+            collectAllData(req, function (data) {
+                crudCreateFunctionFactory(routeInfo.getFileName())(data, function (newid) {
+                        console.log('new id: ' + newid);
+                        res.end('OK\n');
+                    });
+                });
+            break;
+        case 'PUT':
+            if (routeInfo.id) {
+                collectAllData(req, function(data) {
+                    crudUpdateFunctionFactory(routeInfo.getFileName())(routeInfo.id, data, function(retCode) {
+                                res.end('OK\n');
+                            });
+                    });
+            }
             break;
         case 'GET':
-            if (queryObject && queryObject.id) {
-                dbReadFileObject(queryObject.id, function(record) {
+            if (routeInfo.cmd === defaultRouteCmd) {
+                res.end('still to do');
+            } else {
+                if (routeInfo.id) {
+                    crudReadFunctionFactory(routeInfo.getFileName())(routeInfo.id, function (record) {
                         res.end(JSON.stringify(record));
                     })
                     ;
-            } else {
-                dbReadAllFileObjects(function (files) {
-                    res.end(JSON.stringify(files));
-                });                
+                } else {
+                    crudReadAllFunctionFactory(routeInfo.getFileName())(function (files) {
+                        res.end(JSON.stringify(files));
+                    });
+                }                
             }
             break;
-        case 'PUT':
-            req.setEncoding('utf8');
-            req.on('data', function (chunk) {
-                item += chunk;
-            });
-            req.on('end', function () {
-                if (queryObject && queryObject.id) {
-                    dbUpdateFileObject(queryObject.id, item, function(retCode) {
-                            res.end('OK\n');
-                        })
-                        ;
-                }
-            });
-            break;
         case 'DELETE':
-            if (queryObject && queryObject.id) {
-                dbDeleteFileObject(queryObject.id, function (retCode) {
+            if (routeInfo.id) {
+                crudDeleteFunctionFactory(routeInfo.getFileName())(routeInfo.id, function (retCode) {
                     res.end('OK\n');
                 })
                 ;
