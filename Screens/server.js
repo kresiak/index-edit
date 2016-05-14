@@ -139,6 +139,7 @@ function collectAllData(req, cb) {
 
 http.createServer(function (req, res) {
     var routeInfo = getRouteInfo(url.parse(req.url, true));
+    res.setHeader("Access-Control-Allow-Origin", "*");
 
 	switch (req.method) {
         case 'POST':

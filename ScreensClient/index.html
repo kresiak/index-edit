@@ -1,6 +1,7 @@
 ﻿<!DOCTYPE html>
 <!--<html xmlns="http://www.w3.org/1999/xhtml" ng-app="vocApp">-->
-<html xmlns="http://www.w3.org/1999/xhtml" ng-app="screenApp"> <!--manifest="vocapp.appcache">-->
+<html xmlns="http://www.w3.org/1999/xhtml" ng-app="screenApp">
+ <!--manifest="vocapp.appcache">-->
 <head>
     <title>Vocabulary</title>
 
@@ -15,6 +16,7 @@
     <script src="app/appBootAngular.js"></script>
 
     <script src="app/Services/dataService.js"></script>
+    <script src="app/Services/configService.js"></script>
 
     <script src="app/Controllers/mainController.js"></script>
 
@@ -28,6 +30,10 @@
             <h3>Files {{screenNo}}</h3>
         </div>
         <div class="panel-body">
+            <div class="napisy" ng-repeat="file in files">
+                <img ng-src="{{getFileUrl(file)}}" class="galery" />
+                <p>{{file}}</p>
+            </div>
         </div>
     </div>
 
