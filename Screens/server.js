@@ -160,7 +160,13 @@ http.createServer(function (req, res) {
             break;
         case 'GET':
             if (routeInfo.cmd === defaultRouteCmd) {
-                res.end('still to do');
+                if (routeInfo.id) {
+                    var stream = fs.createReadStream(__dirname + '\\files\\' + routeInfo.id);
+                    stream.pipe(res);
+                } else {
+                    var files = fs.readdirSync(__dirname + '\\files\\');
+                    res.end(JSON.stringify(files));                    
+                }
             } else {
                 if (routeInfo.id) {
                     crudReadFunctionFactory(routeInfo.getFileName())(routeInfo.id, function (record) {
