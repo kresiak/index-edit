@@ -6,7 +6,13 @@ app.controller("mainController", function ($scope, dataService, configService) {
 
     dataService.getFileList()
         .then(function() {
-            $scope.files = dataService.getResult();
+            $scope.files = dataService.getResult().map(function(x) {
+                return {
+                    filename: x,
+                    ourname: '',
+                    comment: ''
+                };
+            });
         });
 
 

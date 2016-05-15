@@ -1,7 +1,7 @@
 ﻿<!DOCTYPE html>
 <!--<html xmlns="http://www.w3.org/1999/xhtml" ng-app="vocApp">-->
 <html xmlns="http://www.w3.org/1999/xhtml" ng-app="screenApp">
- <!--manifest="vocapp.appcache">-->
+<!--manifest="vocapp.appcache">-->
 <head>
     <title>Vocabulary</title>
 
@@ -11,6 +11,14 @@
 
     <!--Angular stuff-->
     <script src="Scripts/angular.js"></script>
+
+    <script src="Scripts/angular-ui-router.min.js"></script>
+    <script src="Scripts/angular-local-storage.min.js"></script>
+
+    <script src="Scripts/angular-animate.min.js"></script>
+    <script src="Scripts/angular-touch.min.js"></script>
+    <script src="Scripts/ui-bootstrap-tpls-1.2.4.min.js"></script>
+
 
     <!--Main code App-->
     <script src="app/appBootAngular.js"></script>
@@ -30,9 +38,23 @@
             <h3>Files {{screenNo}}</h3>
         </div>
         <div class="panel-body">
-            <div class="napisy" ng-repeat="file in files">
-                <img ng-src="{{getFileUrl(file)}}" class="galery" />
-                <p>{{file}}</p>
+            <div class="row" ng-repeat="file in files">
+                <div class="col-sm-1" style="z-index: 2">
+                    <img ng-src="{{getFileUrl(file.filename)}}" class="galery" />
+                </div>
+                <div class="col-sm-4" style="z-index: 1">
+                    <div class="form-group">
+                        <input type="text" class="form-control" placeholder="nom de l'image" ng-model="file.ourname" >
+                    </div>
+                </div>
+                <div class="col-sm-6">
+                    <div class="form-group">
+                        <textarea type="text" class="form-control" placeholder="description" rows="3" ng-model="file.comment"></textarea>
+                    </div>
+                </div>
+                <div class="col-sm-1">
+                    <label class="checkbox-inline"><input type="checkbox" value="" ng-model="file.activated">Activé</label>
+                </div>
             </div>
         </div>
     </div>

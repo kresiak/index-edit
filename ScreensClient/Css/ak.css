@@ -1,33 +1,17 @@
 ﻿img.galery{ 	
-			border:10px solid #DDD; 
+			border:2px solid #DDD; 
 			max-width:128px; 
 			max-height:96px; 
-			float:left;
+            margin: 0 0 20px 5px;
+            z-index: 2; 
 }
-img.galery:hover{ 
+img.galery:hover{
+            z-index: 2; 
 			border:2px solid #FFF; 
-			display:block; 
-			-webkit-transform:scale(2.3); 
-			-moz-transform:scale(2.3); 
-			-ms-transform:scale(2.3); 
-			-o-transform:scale(2.3); 
-			margin-left:65px;
+			-webkit-transform:scale(2,3); 
+			-moz-transform:scale(2,3); 
+			-ms-transform:scale(2,3); 
+			-o-transform:scale(2,3); 
+            transform: scale(5,5);
+			margin-left:50px;
 }			
-.napisy p{ 	
-			font-size:18px;
-			margin: 10px; 
-			color:#000;
-}
-.napisy{ 	
-			background-color:#DDD; 
-			margin: 5px 20px; 
-			float:left; 
-			width:970px;
-			min-height:116px;
-}
-.napisy:hover, img.galery:hover{ 
-			background-color:#FFF;
-}
-.napisy a{	
-			text-decoration:none;
-}
