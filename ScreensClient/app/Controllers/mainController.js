@@ -4,18 +4,24 @@ app.controller("mainController", function ($scope, dataService, configService) {
 
     $scope.screenNo = 1;
 
+    function FileInfo(id, filename, ourname, comment, duration, activated) {
+        if (id) this.id = id;
+        this.filename = filename;
+        this.ourname = ourname;
+        this.comment = comment;
+        this.duration = duration;
+        this.activated = activated;
+    }
+
+    FileInfo.prototype.isOk = function() {
+        return !String.IsNullOrEmpty(this.ourname.Trim());
+    }
+
+
     dataService.getFileList()
         .then(function () {
-            $scope.files = dataService.getResult().map(function(x) {
-                return {
-                    filename: x,
-                    ourname: '',
-                    comment: '',
-                    activated: true,
-                    isOk: function() {
-                        return ! String.IsNullOrEmpty(this.ourname.Trim());
-                    }
-                };
+            $scope.files = dataService.getResult().map(function(filename) {
+                return new FileInfo(undefined, filename, '', '', '', true);
             });
             $scope.msg = '';
         });
