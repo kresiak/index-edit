@@ -38,11 +38,15 @@
     <uib-tab index="0" heading="Images à enregistrer" select="setTab(0)">
         <div class="panel panel-info" ng-show="screenNo==1">
             <div class="panel-heading">
+                <div class="btn-group">
+                    <label class="btn btn-primary" ng-model="viewType" uib-btn-radio="'0'" ng-click="changeViewType('0')">Unregistered images</label>
+                    <label class="btn btn-primary" ng-model="viewType" uib-btn-radio="'1'" ng-click="changeViewType('1')">Registered images</label>
+                </div>
                 <button type="button" class="btn btn-warning" ng-click="saveFileList()">Sauver les changements</button>
                 <div ng-show="!String.IsNullOrEmpty(msg.Trim())">{{msg}}</div>
             </div>
             <div class="panel-body">
-                <div class="row" ng-repeat="file in files">
+                <div class="row" ng-repeat="file in getFiles()">
                     <div class="col-sm-1" style="z-index: 2">
                         <img ng-src="{{getFileUrl(file.filename)}}" class="galery" />
                     </div>
