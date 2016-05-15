@@ -12,83 +12,76 @@ var databaseFolder = __dirname + '\\database\\';
 // =====================================
 
 function saveJson(filename, data) {
-	fs.writeFile(filename, JSON.stringify(data), 'utf8', function (err) {
-		if (err) throw err;
-		console.log(filename + ' saved.');
-	});
+    fs.writeFileSync(filename, JSON.stringify(data), 'utf8');
 }
 
 function loadOrInitializeJson(filename, cb) {
-	fs.exists(filename, function (exists) {
-		if (exists) {
-			fs.readFile(filename, 'utf8', function (err, data) {
-                if (err) throw err;
-			    cb(JSON.parse(data.toString() || '{}'));
-			    //cb(JSON.parse(data.toString() || {}));
-			});
-		} else {
-			cb({});
-		}
-	});
+    if (fs.existsSync(filename)) {
+        var data = fs.readFileSync(filename, 'utf8');
+        cb(JSON.parse(data.toString() || '{}'));
+    } else {
+        cb({});
+    }
+	
 }
 
 function getAvailableIdForObject(object) {
-	var keys;
-	return Object.keys(object).length === 0 ? 1 : Number((keys = Object.keys(object))[keys.length - 1]) + 1;
+    var keys;
+    return Object.keys(object).length === 0 ? 1 : Number((keys = Object.keys(object))[keys.length - 1]) + 1;
 }
 
 // CRUD function factories
 // =======================
 
 function crudCreateFunctionFactory(filename) {
-	return function (fileData, cb) {
-		loadOrInitializeJson(filename, function (files) {
-			var newid = getAvailableIdForObject(files);
-			files[newid] = JSON.parse(fileData);
-            saveJson(filename, files);
-		    cb(newid);
-		});
-	}
+    return function (fileData, cb) {
+        loadOrInitializeJson(filename, function (records) {
+            var newid = getAvailableIdForObject(records);
+            records[newid] = JSON.parse(fileData);
+            saveJson(filename, records);
+            cb(newid);
+        });
+    }
 }
 
 function crudReadFunctionFactory(filename) {
-	return function (id, cb) {
-		loadOrInitializeJson(filename, function (files) {
-			cb(files[id]);
-		});
-	}
+    return function (id, cb) {
+        loadOrInitializeJson(filename, function (records) {
+            cb(records[id]);
+        });
+    }
 }
 
 function crudReadAllFunctionFactory(filename) {
-	return function (cb) {
-		loadOrInitializeJson(filename, function (files) {
-			cb(files);
-		});
-	}
+    return function (cb) {
+        loadOrInitializeJson(filename, function (records) {
+            cb(records);
+        });
+    }
 }
 
 function crudUpdateFunctionFactory(filename) {
-	return function (id, fileData, cb) {
-		loadOrInitializeJson(filename, function (files) {
-            if (Object.keys(files).indexOf(id) < 0)
+    return function (id, fileData, cb) {
+        loadOrInitializeJson(filename, function (records) {
+            if (Object.keys(records).indexOf(id) < 0)
                 throw 'unknown id in FileData: ' + filename;
-			files[id] = JSON.parse(fileData);
-            saveJson(filename, files);
-		    cb('OK');
-		});
-	}
+            records[id] = JSON.parse(fileData);
+            saveJson(filename, records);
+            cb('OK');
+        });
+    }
 }
 
 function crudDeleteFunctionFactory(filename) {
-	return function (id, cb) {
-		loadOrInitializeJson(filename, function (files) {
-            if (Object.keys(files).indexOf(id) < 0)
+    return function (id, cb) {
+        loadOrInitializeJson(filename, function (records) {
+            if (Object.keys(records).indexOf(id) < 0)
                 throw 'unknown id in FileData: ' + filename;
-			delete files[id];
-            saveJson(filename, files);
+            delete records[id];
+            saveJson(filename, records);
             cb('OK');
-		});
-	}
+        });
+    }
 }
 
 // routing
@@ -112,11 +105,11 @@ function getRouteInfo(parsedUrl) {
             id = pathParts[1];
         }
     }
-
+    
     return {
         cmd: cmd,
         id: id,
-        getFileName: function() {
+        getFileName: function () {
             return databaseFolder + cmd;
         }
     };
@@ -128,7 +121,7 @@ function getRouteInfo(parsedUrl) {
 function collectAllData(req, cb) {
     var item = '';
     req.setEncoding('utf8');
-
+    
     req.on('data', function (chunk) {
         item += chunk;
     });
@@ -140,23 +133,23 @@ function collectAllData(req, cb) {
 http.createServer(function (req, res) {
     var routeInfo = getRouteInfo(url.parse(req.url, true));
     res.setHeader("Access-Control-Allow-Origin", "*");
-
-	switch (req.method) {
+    
+    switch (req.method) {
         case 'POST':
             collectAllData(req, function (data) {
                 crudCreateFunctionFactory(routeInfo.getFileName())(data, function (newid) {
-                        console.log('new id: ' + newid);
-                        res.end('OK\n');
-                    });
+                    console.log('new id: ' + newid);
+                    res.end('OK\n');
                 });
+            });
             break;
         case 'PUT':
             if (routeInfo.id) {
-                collectAllData(req, function(data) {
-                    crudUpdateFunctionFactory(routeInfo.getFileName())(routeInfo.id, data, function(retCode) {
-                                res.end('OK\n');
-                            });
+                collectAllData(req, function (data) {
+                    crudUpdateFunctionFactory(routeInfo.getFileName())(routeInfo.id, data, function (retCode) {
+                        res.end('OK\n');
                     });
+                });
             }
             break;
         case 'GET':
@@ -166,7 +159,7 @@ http.createServer(function (req, res) {
                     stream.pipe(res);
                 } else {
                     var files = fs.readdirSync(__dirname + '\\files\\');
-                    res.end(JSON.stringify(files));                    
+                    res.end(JSON.stringify(files));
                 }
             } else {
                 if (routeInfo.id) {
@@ -176,9 +169,14 @@ http.createServer(function (req, res) {
                     ;
                 } else {
                     crudReadAllFunctionFactory(routeInfo.getFileName())(function (files) {
-                        res.end(JSON.stringify(files));
+                        res.end(JSON.stringify(Object.keys(files).map(function (id) {
+                            return {
+                                id: id,
+                                data: files[id]
+                            };
+                        })));
                     });
-                }                
+                }
             }
             break;
         case 'DELETE':
@@ -197,9 +195,9 @@ http.createServer(function (req, res) {
             headers["Access-Control-Max-Age"] = '86400'; // 24 hours
             headers["Access-Control-Allow-Headers"] = "X-Requested-With, X-HTTP-Method-Override, Content-Type, Accept";
             res.writeHead(200, headers);
-            res.end();            
-		default:
-	}
+            res.end();
+        default:
+    }
 	
 	//res.writeHead(200, { 'Content-Type': 'text/plain' });
 	//res.end('Hello World\n');
