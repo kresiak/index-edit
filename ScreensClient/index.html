@@ -33,39 +33,60 @@
 
 </head>
 <body ng-controller="mainController">
-    <div class="panel panel-info" ng-show="screenNo==1">
-        <div class="panel-heading">
-            <h3>Files {{screenNo}}</h3>
-        </div>
-        <div class="panel-body">
-            <div class="row" ng-repeat="file in files">
-                <div class="col-sm-1" style="z-index: 2">
-                    <img ng-src="{{getFileUrl(file.filename)}}" class="galery" />
-                </div>
-                <div class="col-sm-4" style="z-index: 1">
-                    <div class="form-group">
-                        <input type="text" class="form-control" placeholder="nom de l'image" ng-model="file.ourname" >
+
+<uib-tabset active="tabNo">
+    <uib-tab index="0" heading="Images à enregistrer" select="setTab(0)">
+        <div class="panel panel-info" ng-show="screenNo==1">
+            <div class="panel-heading">
+                <button type="button" class="btn btn-warning" ng-click="saveFileList()">Sauver les changements</button>
+                <div ng-show="!String.IsNullOrEmpty(msg.Trim())">{{msg}}</div>
+            </div>
+            <div class="panel-body">
+                <div class="row" ng-repeat="file in files">
+                    <div class="col-sm-1" style="z-index: 2">
+                        <img ng-src="{{getFileUrl(file.filename)}}" class="galery" />
                     </div>
-                </div>
-                <div class="col-sm-6">
-                    <div class="form-group">
-                        <textarea type="text" class="form-control" placeholder="description" rows="3" ng-model="file.comment"></textarea>
+                    <div class="col-sm-2" style="z-index: 1">
+                        <div class="form-group">
+                            <input type="text" class="form-control" placeholder="nom de l'image" ng-model="file.ourname">
+                        </div>
                     </div>
-                </div>
-                <div class="col-sm-1">
-                    <label class="checkbox-inline"><input type="checkbox" value="" ng-model="file.activated">Activé</label>
+                    <div class="col-sm-2" style="z-index: 1">
+                        <div class="form-group">
+                            <input type="text" class="form-control" placeholder="durée en secondes" ng-model="file.duration">
+                        </div>
+                    </div>
+                    <div class="col-sm-6">
+                        <div class="form-group">
+                            <textarea type="text" class="form-control" placeholder="description" rows="3" ng-model="file.comment"></textarea>
+                        </div>
+                    </div>
+                    <div class="col-sm-1">
+                        <label class="checkbox-inline"><input type="checkbox" value="" ng-model="file.activated">Activé</label>
+                    </div>
                 </div>
             </div>
         </div>
-    </div>
 
-    <div class="panel panel-success" ng-show="screenNo==10">
-        <div class="panel-heading">
-            <h3>other</h3>
+        <div class="panel panel-success" ng-show="screenNo==10">
+            <div class="panel-heading">
+                <h3>other</h3>
+            </div>
+            <div class="panel-body">
+            </div>
         </div>
-        <div class="panel-body">
-        </div>
-    </div>
+        
+    </uib-tab>
+    <uib-tab index="1" heading="Images enregistrées" select="setTab(1)">
+
+    </uib-tab>
+    <uib-tab index="2" heading="Upload" select="setTab(2)">
+
+    </uib-tab>
+</uib-tabset>
+
+
+
 
 
 </body>

@@ -25,8 +25,14 @@ app.factory('dataService', ['configService', '$http', function (configService, $
         return resultObject;
     }
 
+    function crudCreateRecord(table, record) {
+        return $http.post(urlprefix + table, record);
+    }
+
+
     dataServicefactory.getResult = getResult;
     dataServicefactory.getFileList = getFileList;
+    dataServicefactory.crudCreateRecord = crudCreateRecord;
 
     return dataServicefactory;
 }]);

@@ -12,6 +12,6 @@ img.galery:hover{
 			-moz-transform:scale(2,3); 
 			-ms-transform:scale(2,3); 
 			-o-transform:scale(2,3); 
-            transform: scale(5,5);
+            transform: scale(3,3);
 			margin-left:50px;
 }			
