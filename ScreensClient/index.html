@@ -23,11 +23,14 @@
     <!--Main code App-->
     <script src="app/appBootAngular.js"></script>
 
+    <script src="app/Classes/dataClasses.js"></script>
+
     <script src="app/Services/dataService.js"></script>
     <script src="app/Services/configService.js"></script>
 
     <script src="app/Controllers/mainController.js"></script>
     <script src="app/Controllers/filesController.js"></script>
+    <script src="app/Controllers/sequencesController.js"></script>
 
     <script src="app/filters.js"></script>
 
@@ -36,7 +39,7 @@
 <body ng-controller="mainController">
 
 <uib-tabset active="tabNo">
-    <uib-tab index="0" heading="Images à enregistrer" select="setTab(0)" >
+    <uib-tab index="0" heading="Fichiers et Images" select="setTab(0)" >
         <div class="panel panel-info" ng-show="screenNo==1" ng-controller="filesController">
             <div class="panel-heading">
                 <div class="btn-group">
@@ -83,14 +86,16 @@
 
     </uib-tab>
 
-    <uib-tab index="1" heading="Images enregistrées" select="setTab(1)">
-        <div class="row">
-            <div class="col-sm-4">
-                
-            </div>
-            <div class="col-sm-8">
-                
-            </div>
+    <uib-tab index="1" heading="Séquences d'images'" select="setTab(1)">
+        <div ng-controller="sequencesController">
+            <div class="row">
+                <div class="col-sm-4">
+
+                </div>
+                <div class="col-sm-8">
+
+                </div>
+            </div>            
         </div>
     </uib-tab>
     <uib-tab index="2" heading="Upload" select="setTab(2)">

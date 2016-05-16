@@ -1,34 +1,19 @@
 ﻿'use strict';
 
-app.controller("filesController", function ($scope, dataService, configService, $q) {
+app.controller("filesController", function ($scope, dataService, $q) {
 
     $scope.screenNo = 1;
     $scope.viewType = '1';
 
     var tablename = 'fileinfos';
 
-    function FileInfo(id, filename, ourname, comment, duration, activated) {
-        if (id) this.id = id;
-        this.filename = filename;
-        this.ourname = ourname;
-        this.comment = comment;
-        this.duration = duration;
-        this.activated = activated;
-    }
-
-    FileInfo.prototype.isOk = function () {
-        return !String.IsNullOrEmpty(this.ourname.Trim());
-    }
-
     function initFiles() {
         dataService.getFileList()
             .then(function (response) {
                 var filesInDir = response.data.map(function (filename) { return new FileInfo(undefined, filename, '', '', '', true); });
 
-                dataService.crudGetRecords(tablename).then(function (response) {
-                    var filesInDb = response.data.map(function (filerecord) {
-                        return new FileInfo(filerecord.id, filerecord.data.filename, filerecord.data.ourname, filerecord.data.comment, filerecord.data.duration, filerecord.data.activated);
-                    });
+                $scope.initDBFiles().then(function (response) {
+                    var filesInDb = $scope.filesInDb;
 
                     var filesInDbUnregistered = filesInDir.filter(function (fileInDir) {  // keep only files in DIR which are not yet in DB
                         return filesInDb.filter(function (fileInDb) {
