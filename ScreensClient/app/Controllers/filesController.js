@@ -39,8 +39,6 @@ app.controller("filesController", function ($scope, dataService, $q) {
 
 
     $scope.saveFileList = function () {
-        var allOk = true;
-
         var crudPromises = $scope.getFiles().filter(function (x) { return x.isOk(); }).map(function (fileInfo) {
             if ($scope.viewType === '0') return dataService.crudCreateRecord(tablename, fileInfo);
             else return dataService.crudUpdateRecord(tablename, fileInfo.id, fileInfo);
@@ -53,7 +51,6 @@ app.controller("filesController", function ($scope, dataService, $q) {
                         },
                         function (response) {
                             $scope.msg = 'Error';
-                            allOk = false;
                         }
             );
     }

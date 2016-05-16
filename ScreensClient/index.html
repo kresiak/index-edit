@@ -38,70 +38,113 @@
 </head>
 <body ng-controller="mainController">
 
-<uib-tabset active="tabNo">
-    <uib-tab index="0" heading="Fichiers et Images" select="setTab(0)" >
-        <div class="panel panel-info" ng-show="screenNo==1" ng-controller="filesController">
-            <div class="panel-heading">
-                <div class="btn-group">
-                    <label class="btn btn-primary" ng-model="viewType" uib-btn-radio="'0'" ng-click="changeViewType('0')">Unregistered images</label>
-                    <label class="btn btn-primary" ng-model="viewType" uib-btn-radio="'1'" ng-click="changeViewType('1')">Registered images</label>
-                </div>
-                <button type="button" class="btn btn-warning" ng-click="saveFileList()">Sauver les changements</button>
-                <div ng-show="!String.IsNullOrEmpty(msg.Trim())">{{msg}}</div>
-            </div>
-            <div class="panel-body">
-                <div class="row" ng-repeat="file in getFiles()">
-                    <div class="col-sm-1" style="z-index: 2">
-                        <img ng-src="{{getFileUrl(file.filename)}}" class="galery"/>
+    <uib-tabset active="tabNo">
+        <uib-tab index="0" heading="Fichiers et Images" select="setTab(0)">
+            <div class="panel panel-info" ng-show="screenNo==1" ng-controller="filesController">
+                <div class="panel-heading">
+                    <div class="btn-group">
+                        <label class="btn btn-primary" ng-model="viewType" uib-btn-radio="'0'" ng-click="changeViewType('0')">Unregistered images</label>
+                        <label class="btn btn-primary" ng-model="viewType" uib-btn-radio="'1'" ng-click="changeViewType('1')">Registered images</label>
                     </div>
-                    <div class="col-sm-2" style="z-index: 1">
-                        <div class="form-group">
-                            <input type="text" class="form-control" placeholder="nom de l'image" ng-model="file.ourname">
+                    <button type="button" class="btn btn-warning" ng-click="saveFileList()">Sauver les changements</button>
+                    <div ng-show="!String.IsNullOrEmpty(msg.Trim())">{{msg}}</div>
+                </div>
+                <div class="panel-body">
+                    <div class="row" ng-repeat="file in getFiles()">
+                        <div class="col-sm-1" style="z-index: 2">
+                            <img ng-src="{{getFileUrl(file.filename)}}" class="galery" />
+                        </div>
+                        <div class="col-sm-2" style="z-index: 1">
+                            <div class="form-group">
+                                <input type="text" class="form-control" placeholder="nom de l'image" ng-model="file.ourname">
+                            </div>
+                        </div>
+                        <div class="col-sm-2" style="z-index: 1">
+                            <div class="form-group">
+                                <input type="text" class="form-control" placeholder="durée en secondes" ng-model="file.duration">
+                            </div>
+                        </div>
+                        <div class="col-sm-6">
+                            <div class="form-group">
+                                <textarea type="text" class="form-control" placeholder="description" rows="3" ng-model="file.comment"></textarea>
+                            </div>
+                        </div>
+                        <div class="col-sm-1">
+                            <label class="checkbox-inline"><input type="checkbox" value="" ng-model="file.activated">Activé</label>
                         </div>
                     </div>
-                    <div class="col-sm-2" style="z-index: 1">
-                        <div class="form-group">
-                            <input type="text" class="form-control" placeholder="durée en secondes" ng-model="file.duration">
+                </div>
+            </div>
+
+            <div class="panel panel-success" ng-show="screenNo==10">
+                <div class="panel-heading">
+                    <h3>other</h3>
+                </div>
+                <div class="panel-body">
+                </div>
+            </div>
+
+        </uib-tab>
+
+        <uib-tab index="1" heading="Séquences d'images" select="setTab(1)">
+            <div ng-controller="sequencesController">
+                <div class="row">
+                    <div class="col-sm-4">
+                        <div style="margin:50px 20px">
+                            <div class="list-group">
+                                <a class="list-group-item" ng-click="seqselected = null" ng-class="{active:seqselected == null}">< Créer une nouvelle séquence></a>
+                                <a ng-repeat="seq in sequences" class="list-group-item" ng-click="$parent.seqselected = seq" ng-class="{active:seqselected == seq}">{{seq.data.name}} ({{seq.data.comment}})</a>
+                            </div>
                         </div>
                     </div>
-                    <div class="col-sm-6">
-                        <div class="form-group">
-                            <textarea type="text" class="form-control" placeholder="description" rows="3" ng-model="file.comment"></textarea>
+                    <div class="col-sm-8">
+                        <div style="margin: 50px 20px">
+                            <div class="row">
+                                <uib-tabset active="tabNo">
+                                    <uib-tab index="0" heading="Images sélectionnées" select="setTab(0)">
+                                        <div class="col-sm-6">
+                                            <div class="row">
+                                                <div ng-repeat="fileid in seqselected.data.files" class="col-sm-4">
+                                                    <div class="thumbnail">
+                                                        <img class="img-thumbnail" ng-src="{{getFileUrl(getFileInfoById(fileid).filename)}}" />
+                                                        <div style="text-align: center;">{{getFileInfoById(fileid).ourname}}</div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="col-sm-6">
+
+                                        </div>
+
+                                    </uib-tab>
+                                    <uib-tab index="1" heading="Images à ajouter" select="setTab(1)">
+
+                                        <div class="col-sm-6">
+                                            <div class="row">
+                                                <div ng-repeat="fileinfo in getCandidateFiles(seqselected)" class="col-sm-4">
+                                                    <div class="thumbnail">
+                                                        <img class="img-thumbnail" ng-src="{{getFileUrl(fileinfo.filename)}}" />
+                                                        <div style="text-align: center;">{{fileinfo.ourname}}</div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="col-sm-6">
+
+                                        </div>
+
+                                    </uib-tab>
+                                </uib-tabset>
+                            </div>
                         </div>
                     </div>
-                    <div class="col-sm-1">
-                        <label class="checkbox-inline"><input type="checkbox" value="" ng-model="file.activated">Activé</label>
-                    </div>
                 </div>
             </div>
-        </div>
+        </uib-tab>
+        <uib-tab index="2" heading="Upload" select="setTab(2)">
 
-        <div class="panel panel-success" ng-show="screenNo==10">
-            <div class="panel-heading">
-                <h3>other</h3>
-            </div>
-            <div class="panel-body">
-            </div>
-        </div>
-
-    </uib-tab>
-
-    <uib-tab index="1" heading="Séquences d'images'" select="setTab(1)">
-        <div ng-controller="sequencesController">
-            <div class="row">
-                <div class="col-sm-4">
-
-                </div>
-                <div class="col-sm-8">
-
-                </div>
-            </div>            
-        </div>
-    </uib-tab>
-    <uib-tab index="2" heading="Upload" select="setTab(2)">
-
-    </uib-tab>
-</uib-tabset>
+        </uib-tab>
+    </uib-tabset>
 
 
 
