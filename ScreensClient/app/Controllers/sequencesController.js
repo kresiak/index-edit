@@ -15,10 +15,11 @@ app.controller("sequencesController", function ($scope, dataService, configServi
 
 
     var initEmptySeqElement= function() {
-        $scope.newSequence = { id: "", data: { files: [] } };
+        $scope.newSequence = { id: "", data: { name: '', files: [] } };
+        $scope.seqselected = $scope.newSequence;
     }
     initEmptySeqElement();
-    $scope.seqselected = $scope.newSequence;
+    
 
 
     $scope.getFileInfoById= function(id) {
@@ -37,6 +38,21 @@ app.controller("sequencesController", function ($scope, dataService, configServi
         return $scope.filesInDb.filter(function (fileInDbInfo) {
             return !currentSeq || currentSeq.data.files.indexOf(fileInDbInfo.id) < 0;
         });
+    }
+
+    $scope.saveSequence = function () {
+        var seq = $scope.seqselected;
+        if (seq && seq.data && ! String.IsNullOrEmpty(seq.data.name)) {
+            var func = seq.id
+                ? function() { return dataService.crudUpdateRecord(tablename, seq.id, seq.data); }
+                : function () { return dataService.crudCreateRecord(tablename, seq.data); };
+            func().then(function(response) {
+                initDBSequences();
+                initEmptySeqElement();
+                $scope.sequenceFileIdSelected = null;
+                $scope.candidateFileIdSelected = null;
+            }, function (response) { });
+        }       
     }
 
     // ============
@@ -86,6 +102,10 @@ app.controller("sequencesController", function ($scope, dataService, configServi
 
     $scope.isCandidateFileTheActiveOne = function (fileinfo) {
         return $scope.candidateFileIdSelected === fileinfo;
+    }
+
+    $scope.isSequenceNameEmpty= function() {
+        return String.IsNullOrEmpty($scope.seqselected.data.name.Trim());
     }
 
     //===================
