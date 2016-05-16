@@ -1,1 +1,1 @@
-{"1":{"name":"general", "comment":"general information", "screens":["3","5"]}, "2" : {"name":"urgent", "comment":"urgent information", "screens":["4","5"]}}
+{"1":{"name":"general", "comment":"general information", "files":["8","5", "7", "4"]}, "2" : {"name":"urgent", "comment":"urgent information", "files":["4","5"]}}
