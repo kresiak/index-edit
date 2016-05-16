@@ -86,26 +86,59 @@
 
         </uib-tab>
 
+        <!--********************************************************************-->
         <uib-tab index="1" heading="Séquences d'images" select="setTab(1)">
             <div ng-controller="sequencesController">
                 <div class="row">
+                    <!--================================
+                    Choose a sequence or create one
+                    ================================-->
                     <div class="col-sm-4">
-                        <div style="margin:50px 20px">
+                        <div style="margin: 50px 20px">
                             <div class="list-group">
-                                <a class="list-group-item" ng-click="seqselected = null" ng-class="{active:seqselected == null}">< Créer une nouvelle séquence></a>
-                                <a ng-repeat="seq in sequences" class="list-group-item" ng-click="$parent.seqselected = seq" ng-class="{active:seqselected == seq}">{{seq.data.name}} ({{seq.data.comment}})</a>
+                                <a class="list-group-item" ng-click="sequenceSelected()" ng-class="{active:isSequenceTheActiveOne()}">< Créer une nouvelle séquence></a>
+                                <!--REPEAT-->
+                                <a ng-repeat="seq in sequences" class="list-group-item" ng-click="sequenceSelected(seq)" ng-class="{active:isSequenceTheActiveOne(seq)}">{{seq.data.name}} ({{seq.data.comment}})</a>
                             </div>
                         </div>
                     </div>
+                    <!--================================
+                    Detail of a Sequence
+                    ================================-->
                     <div class="col-sm-8">
                         <div style="margin: 50px 20px">
+                            <!--=========================
+                            Properties of a sequence
+                            =========================-->
+                            <div class="row">
+                                <div class="col-sm-4" style="z-index: 1">
+                                    <div class="form-group">
+                                        <input type="text" class="form-control" placeholder="nom de la séquence" ng-model="seqselected.data.name">
+                                    </div>
+                                </div>
+                                <div class="col-sm-7">
+                                    <div class="form-group">
+                                        <textarea type="text" class="form-control" placeholder="description" rows="3" ng-model="seqselected.data.comment"></textarea>
+                                    </div>
+                                </div>
+                                <div class="col-sm-1">
+                                    <label class="checkbox-inline"><input type="checkbox" value="" ng-model="seqselected.data.activated">Activé</label>
+                                </div>
+                            </div>
+                            <!--=======================
+                            Images of a sequence
+                            =========================-->
                             <div class="row">
                                 <uib-tabset active="tabNo">
+                                    <!--==================
+                                    Selected pictures
+                                    ==================-->
                                     <uib-tab index="0" heading="Images sélectionnées" select="setTab(0)">
                                         <div class="col-sm-6">
                                             <div class="row">
+                                                <!--REPEAT-->
                                                 <div ng-repeat="fileid in seqselected.data.files" class="col-sm-4">
-                                                    <div class="thumbnail">
+                                                    <div class="thumbnail" ng-click="sequenceFileSelected(fileid)" ng-class="{active:isSequenceFileTheActiveOne(fileid)}">
                                                         <img class="img-thumbnail" ng-src="{{getFileUrl(getFileInfoById(fileid).filename)}}" />
                                                         <div style="text-align: center;">{{getFileInfoById(fileid).ourname}}</div>
                                                     </div>
@@ -113,16 +146,30 @@
                                             </div>
                                         </div>
                                         <div class="col-sm-6">
-
+                                            <div ng-show="!isSequenceFileTheActiveOne(null)" style="margin: 50px 20px">
+                                                <div class="btn-group-vertical" role="group" aria-label="...">
+                                                    <button type="button" class="btn btn-danger" ng-click="removeCurrentImageFromSelection()">Supprimer de la séquence</button>
+                                                    <button type="button" class="btn btn-info" >Monter dans la séquence</button>
+                                                    <button type="button" class="btn btn-info">Descendre dans la séquence</button>
+                                                </div>
+                                            </div>
                                         </div>
-
+                                        <div class="jumbotron" ng-show="! seqselected || seqselected.data.files.length==0">
+                                            <div class="container">
+                                                <h4>Pas encore d'images sélectionnées</h4>
+                                            </div>
+                                        </div>
                                     </uib-tab>
+                                    <!--==================
+                                    NOT selected pictures
+                                    ==================-->
                                     <uib-tab index="1" heading="Images à ajouter" select="setTab(1)">
 
                                         <div class="col-sm-6">
                                             <div class="row">
+                                                <!--REPEAT-->
                                                 <div ng-repeat="fileinfo in getCandidateFiles(seqselected)" class="col-sm-4">
-                                                    <div class="thumbnail">
+                                                    <div class="thumbnail" ng-click="candidateFileSelected(fileinfo)" ng-class="{active:isCandidateFileTheActiveOne(fileinfo)}">
                                                         <img class="img-thumbnail" ng-src="{{getFileUrl(fileinfo.filename)}}" />
                                                         <div style="text-align: center;">{{fileinfo.ourname}}</div>
                                                     </div>
@@ -130,7 +177,16 @@
                                             </div>
                                         </div>
                                         <div class="col-sm-6">
-
+                                            <div ng-show="!isCandidateFileTheActiveOne(null)" style="margin: 50px 20px">
+                                                <div class="btn-group-vertical" role="group" aria-label="...">
+                                                    <button type="button" class="btn btn-danger" ng-click="addCurrentImageToSelection()">Ajouter à la séquence</button>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="jumbotron" ng-show="seqselected && getCandidateFiles(seqselected).length==0">
+                                            <div class="container">
+                                                <h4>Toutes les images ont été sélectionnées</h4>
+                                            </div>
                                         </div>
 
                                     </uib-tab>

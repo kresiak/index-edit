@@ -23,6 +23,11 @@ img.galery:hover{
     overflow: auto;
 }
 
+.thumbnail.active{        
+    background-color: lightblue;
+}
+
+
 .thumbnail img{
     max-height: 120px;
 }
