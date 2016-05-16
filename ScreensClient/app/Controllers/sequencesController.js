@@ -105,5 +105,27 @@ app.controller("sequencesController", function ($scope, dataService, configServi
         $scope.sequenceFileIdSelected = null;
     }
 
+    $scope.MoveUpCurrentImageInSelection = function () {
+        var imageId = $scope.sequenceFileIdSelected;
+        var list = $scope.seqselected.data.files;
+        var index = list.indexOf(imageId);
+        if (index < list.length - 1) {
+            var saved = list[index];
+            list[index] = list[index + 1];
+            list[index + 1] = saved;
+        }
+    }
+
+    $scope.MoveDownCurrentImageInSelection = function () {
+        var imageId = $scope.sequenceFileIdSelected;
+        var list = $scope.seqselected.data.files;
+        var index = list.indexOf(imageId);
+        if (index > 0) {
+            var saved = list[index];
+            list[index] = list[index - 1];
+            list[index - 1] = saved;
+        }
+    }
+
 });
 

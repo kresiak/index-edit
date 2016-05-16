@@ -149,8 +149,8 @@
                                             <div ng-show="!isSequenceFileTheActiveOne(null)" style="margin: 50px 20px">
                                                 <div class="btn-group-vertical" role="group" aria-label="...">
                                                     <button type="button" class="btn btn-danger" ng-click="removeCurrentImageFromSelection()">Supprimer de la séquence</button>
-                                                    <button type="button" class="btn btn-info" >Monter dans la séquence</button>
-                                                    <button type="button" class="btn btn-info">Descendre dans la séquence</button>
+                                                    <button type="button" class="btn btn-info" ng-click="MoveUpCurrentImageInSelection()">Monter dans la séquence</button>
+                                                    <button type="button" class="btn btn-info" ng-click="MoveDownCurrentImageInSelection()">Descendre dans la séquence</button>
                                                 </div>
                                             </div>
                                         </div>
