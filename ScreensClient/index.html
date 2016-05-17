@@ -32,6 +32,7 @@
     <script src="app/Controllers/filesController.js"></script>
     <script src="app/Controllers/sequencesController.js"></script>
     <script src="app/Controllers/schedulesController.js"></script>
+    <script src="app/Controllers/datePickerController.js"></script>
 
     <script src="app/filters.js"></script>
 
@@ -234,6 +235,207 @@
                                 </div>
                                 <div class="col-sm-3">
                                     <button type="button" class="btn btn-danger" ng-click="saveSchedule()" ng-disabled="isScheduleNameEmpty()">Sauver la programmation</button>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-sm-2" style="z-index: 1">
+                                    <h4>Répétition</h4>
+                                </div>
+                                <div class="col-sm-2" style="z-index: 1">
+                                    <div class="radio">
+                                        <label><input type="radio" name="optradio">Une seule fois</label>
+                                    </div>
+                                    <div class="radio">
+                                        <label><input type="radio" name="optradio">Journalière</label>
+                                    </div>
+                                    <div class="radio">
+                                        <label><input type="radio" name="optradio">Hebdomadaire</label>
+                                    </div>
+                                    <div class="radio">
+                                        <label><input type="radio" name="optradio">Mensuelle</label>
+                                    </div>
+                                    <div class="radio">
+                                        <label><input type="radio" name="optradio">Mensuelle par jour</label>
+                                    </div>
+                                </div>
+                                <div class="col-sm-8">
+                                    <div class="row">
+                                        <div class="col-sm-2 vcenter">
+                                            <h5>le</h5>
+                                        </div>
+                                        <div class="col-sm-4 vcenter">
+                                            <div ng-controller="datePickerController">
+                                                <p class="input-group">
+                                                    <input type="text" class="form-control" uib-datepicker-popup ng-model="dateOnce" is-open="openedDateOnce" datepicker-options="dateOptions" ng-required="true" close-text="Close" />
+                                                    <span class="input-group-btn">
+                                                        <button type="button" class="btn btn-default" ng-click="openedDateOnce=true"><i class="glyphicon glyphicon-calendar"></i></button>
+                                                    </span>
+                                                </p>
+                                            </div>                                            
+                                        </div>
+                                        <div class="col-sm-1 vcenter">
+                                            <h5>à</h5>
+                                        </div>
+                                        <div class="col-sm-3 vcenter">
+                                            <div class="form-group">
+                                                <uib-timepicker ng-model="xdfsfafds" ng-change="" hour-step="1" minute-step="1" show-meridian="true"></uib-timepicker>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-sm-2 ">
+                                            <h5>tous les </h5>
+                                        </div>
+                                        <div class="col-sm-2 ">
+                                            <div class="form-group">
+                                                <input type="number" class="form-control" placeholder="x" min="1" max="1000">
+                                            </div>
+                                        </div>
+                                        <div class="col-sm-2 ">
+                                            <h5>jours</h5>
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-sm-2 ">
+                                            <h5>tous les </h5>
+                                        </div>
+                                        <div class="form-group col-sm-2">
+                                            <input type="number" class="form-control" placeholder="x" min="1" max="100">
+                                        </div>
+                                        <div class="col-sm-8 ">
+                                            <div class="btn-group">
+                                                <label class="btn btn-default" ng-model="checkModel.lundi" uib-btn-checkbox>lundi</label>
+                                                <label class="btn btn-default" ng-model="checkModel.mardi" uib-btn-checkbox>mardi</label>
+                                                <label class="btn btn-default" ng-model="checkModel.mercredi" uib-btn-checkbox>mercredi</label>
+                                                <label class="btn btn-default" ng-model="checkModel.jeudi" uib-btn-checkbox>jeudi</label>
+                                                <label class="btn btn-default" ng-model="checkModel.vendredi" uib-btn-checkbox>vendredi</label>
+                                                <label class="btn btn-default" ng-model="checkModel.samedi" uib-btn-checkbox>samedi</label>
+                                                <label class="btn btn-default" ng-model="checkModel.dimanche" uib-btn-checkbox>dimanche</label>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-sm-2 ">
+                                            <h5>tous les </h5>
+                                        </div>
+                                        <div class="form-group col-sm-2">
+                                            <select class="form-control" id="sel1">
+                                                <option>premier</option>
+                                                <option>second</option>
+                                                <option>3-ème</option>
+                                                <option>4-ème</option>
+                                                <option>dernier</option>
+                                            </select>
+                                        </div>
+                                        <div class="col-sm-8 ">
+                                            <div class="btn-group">
+                                                <label class="btn btn-default" ng-model="radioModel" uib-btn-radio="'lundi'">lundi</label>
+                                                <label class="btn btn-default" ng-model="radioModel" uib-btn-radio="'mardi'">mardi</label>
+                                                <label class="btn btn-default" ng-model="radioModel" uib-btn-radio="'mercredi'">mercredi</label>
+                                                <label class="btn btn-default" ng-model="radioModel" uib-btn-radio="'jeudi'">jeudi</label>
+                                                <label class="btn btn-default" ng-model="radioModel" uib-btn-radio="'vendredi'">vendredi</label>
+                                                <label class="btn btn-default" ng-model="radioModel" uib-btn-radio="'samedi'">samedi</label>
+                                                <label class="btn btn-default" ng-model="radioModel" uib-btn-radio="'dimanche   '">dimanche</label>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-sm-2 ">
+                                            <h5>tous les </h5>
+                                        </div>
+                                        <div class="col-sm-2 ">
+                                            <div class="form-group">
+                                                <input type="number" class="form-control" placeholder="x" min="1" max="31">
+                                            </div>
+                                        </div>
+                                        <div class="col-sm-2 ">
+                                            <h5>du mois</h5>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-sm-2" style="z-index: 1">
+                                    <h4>Durant la journée</h4>
+                                </div>
+                                <div class="col-sm-2" style="z-index: 1">
+                                    <div class="radio">
+                                        <label><input type="radio" name="optradio">Une seule fois</label>
+                                    </div>
+                                    <div class="radio">
+                                        <label><input type="radio" name="optradio">Toutes les x minutes</label>
+                                    </div>
+                                    <div class="radio">
+                                        <label><input type="radio" name="optradio">Toutes les x heures</label>
+                                    </div>
+                                </div>
+                                <div class="col-sm-8">
+                                    <div class="row">
+                                        <div class="col-sm-2 vcenter">
+                                            <h5>à</h5>
+                                        </div>
+                                        <div class="col-sm-3 vcenter">
+                                            <div class="form-group">
+                                                <uib-timepicker ng-model="timeInDayOnce" ng-change="" hour-step="1" minute-step="1" show-meridian="true"></uib-timepicker>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-sm-2 ">
+                                            <h5>fréquence</h5>
+                                        </div>
+                                        <div class="col-sm-3 ">
+                                            <div class="form-group">
+                                                <input type="number" class="form-control" placeholder="entrer la fréquence x" min="1" max="60">
+                                            </div>
+                                        </div>                                        
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-sm-2 vcenter">
+                                            <h5>entre</h5>
+                                        </div>
+                                        <div class="col-sm-3 vcenter">
+                                            <uib-timepicker ng-model="timeInDayEnd" ng-change="" hour-step="1" minute-step="1" show-meridian="true"></uib-timepicker>
+                                        </div>
+                                        <div class="col-sm-1 vcenter">
+                                            <h5>et</h5>
+                                        </div>
+                                        <div class="col-sm-3 vcenter">
+                                            <uib-timepicker ng-model="timeInDayEnd" ng-change="" hour-step="1" minute-step="1" show-meridian="true"></uib-timepicker>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-sm-2 vcenter" style="z-index: 1">
+                                    <h4>Validité</h4>
+                                </div>
+                                <div class="col-sm-2 vcenter" style="z-index: 1">
+                                    <div ng-controller="datePickerController">
+                                        <p class="input-group">
+                                            <input type="text" class="form-control" uib-datepicker-popup ng-model="dateStart" is-open="openedStart" datepicker-options="dateOptions" ng-required="true" close-text="Close"/>
+                                            <span class="input-group-btn">
+                                                <button type="button" class="btn btn-default" ng-click="openedStart=true"><i class="glyphicon glyphicon-calendar"></i></button>
+                                            </span>
+                                        </p>
+                                    </div>
+                                </div>
+                                <div class="col-sm-2 vcenter">
+                                    <uib-timepicker ng-model="timeStart" ng-change="" hour-step="1" minute-step="1" show-meridian="true"></uib-timepicker>
+                                </div>
+                                <div class="col-sm-1 vcenter">à</div>
+                                <div class="col-sm-2 vcenter">
+                                    <div ng-controller="datePickerController">
+                                        <p class="input-group">
+                                            <input type="text" class="form-control" uib-datepicker-popup ng-model="dateEnd" is-open="openedEnd" datepicker-options="dateOptions" ng-required="true" close-text="Close"/>
+                                            <span class="input-group-btn">
+                                                <button type="button" class="btn btn-default" ng-click="openedEnd=true"><i class="glyphicon glyphicon-calendar"></i></button>
+                                            </span>
+                                        </p>
+                                    </div>
+                                </div>
+                                <div class="col-sm-2 vcenter">
+                                    <uib-timepicker ng-model="timeEnd" ng-change="" hour-step="1" minute-step="1" show-meridian="true"></uib-timepicker>
                                 </div>
                             </div>
 
