@@ -31,6 +31,7 @@
     <script src="app/Controllers/mainController.js"></script>
     <script src="app/Controllers/filesController.js"></script>
     <script src="app/Controllers/sequencesController.js"></script>
+    <script src="app/Controllers/schedulesController.js"></script>
 
     <script src="app/filters.js"></script>
 
@@ -200,8 +201,46 @@
                 </div>
             </div>
         </uib-tab>
-        <uib-tab index="2" heading="Upload" select="setTab(2)">
+        <uib-tab index="2" heading="Programmation" select="setTab(2)">
+            <div ng-controller="schedulesController">
+                <div class="row">
+                    <!--================================
+                    Choose a schedule or create one
+                    ================================-->
+                    <div class="col-sm-4">
+                        <div style="margin: 50px 20px">
+                            <div class="list-group">
+                                <a class="list-group-item" ng-click="scheduleSelected()" ng-class="{active:isScheduleTheActiveOne()}">< Créer une nouvelle programmation></a>
+                                <!--REPEAT-->
+                                <a ng-repeat="schedule in schedules" class="list-group-item" ng-click="scheduleSelected(schedule)" ng-class="{active:isScheduleTheActiveOne(schedule)}">{{schedule.data.name}} ({{schedule.data.comment}})</a>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-sm-8">
+                        <div style="margin: 50px 20px">
+                            <!--=========================
+                            Properties of a scheduling
+                            =========================-->
+                            <div class="row">
+                                <div class="col-sm-3" style="z-index: 1">
+                                    <div class="form-group">
+                                        <input type="text" class="form-control" placeholder="nom de la programmation" ng-model="scheduleselected.data.name">
+                                    </div>
+                                </div>
+                                <div class="col-sm-6">
+                                    <div class="form-group">
+                                        <textarea type="text" class="form-control" placeholder="description" rows="3" ng-model="scheduleselected.data.comment"></textarea>
+                                    </div>
+                                </div>
+                                <div class="col-sm-3">
+                                    <button type="button" class="btn btn-danger" ng-click="saveSchedule()" ng-disabled="isScheduleNameEmpty()">Sauver la programmation</button>
+                                </div>
+                            </div>
 
+                        </div>
+                    </div>
+                </div>
+            </div>
         </uib-tab>
     </uib-tabset>
 

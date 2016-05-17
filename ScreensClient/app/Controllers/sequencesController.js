@@ -1,6 +1,6 @@
 ﻿'use strict';
 
-app.controller("sequencesController", function ($scope, dataService, configService, $q) {
+app.controller("sequencesController", function ($scope, dataService) {
 
     var tablename = 'sequences';
     // inherits $scope.filesInDb
