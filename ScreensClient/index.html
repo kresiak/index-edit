@@ -208,7 +208,7 @@
                     <!--================================
                     Choose a schedule or create one
                     ================================-->
-                    <div class="col-sm-4">
+                    <div class="col-sm-3">
                         <div style="margin: 50px 20px">
                             <div class="list-group">
                                 <a class="list-group-item" ng-click="scheduleSelected()" ng-class="{active:isScheduleTheActiveOne()}">< Créer une nouvelle programmation></a>
@@ -217,7 +217,7 @@
                             </div>
                         </div>
                     </div>
-                    <div class="col-sm-8">
+                    <div class="col-sm-9">
                         <div style="margin: 50px 20px">
                             <!--=========================
                             Properties of a scheduling
@@ -237,41 +237,45 @@
                                     <button type="button" class="btn btn-danger" ng-click="saveSchedule()" ng-disabled="isScheduleNameEmpty()">Sauver la programmation</button>
                                 </div>
                             </div>
+                            <!--=========================
+                            Types of repetition
+                            =========================-->
                             <div class="row">
                                 <div class="col-sm-2" style="z-index: 1">
                                     <h4>Répétition</h4>
                                 </div>
                                 <div class="col-sm-2" style="z-index: 1">
                                     <div class="radio">
-                                        <label><input type="radio" name="optradio">Une seule fois</label>
+                                        <label><input type="radio" ng-model="scheduleselected.data.type" value="once">Une seule fois</label>
                                     </div>
                                     <div class="radio">
-                                        <label><input type="radio" name="optradio">Journalière</label>
+                                        <label><input type="radio" ng-model="scheduleselected.data.type" value="daily">Journalière</label>
                                     </div>
                                     <div class="radio">
-                                        <label><input type="radio" name="optradio">Hebdomadaire</label>
+                                        <label><input type="radio" ng-model="scheduleselected.data.type" value="weekly">Hebdomadaire</label>
                                     </div>
                                     <div class="radio">
-                                        <label><input type="radio" name="optradio">Mensuelle</label>
+                                        <label><input type="radio" ng-model="scheduleselected.data.type" value="monthly">Mensuelle</label>
                                     </div>
                                     <div class="radio">
-                                        <label><input type="radio" name="optradio">Mensuelle par jour</label>
+                                        <label><input type="radio" ng-model="scheduleselected.data.type" value="monthlyii">Mensuelle par jour</label>
                                     </div>
                                 </div>
                                 <div class="col-sm-8">
-                                    <div class="row">
+                                    <!--Only ONCE-->
+                                    <div class="row" ng-show="scheduleselected.data.type === 'once'">
                                         <div class="col-sm-2 vcenter">
                                             <h5>le</h5>
                                         </div>
                                         <div class="col-sm-4 vcenter">
                                             <div ng-controller="datePickerController">
                                                 <p class="input-group">
-                                                    <input type="text" class="form-control" uib-datepicker-popup ng-model="dateOnce" is-open="openedDateOnce" datepicker-options="dateOptions" ng-required="true" close-text="Close" />
+                                                    <input type="text" class="form-control" uib-datepicker-popup ng-model="dateOnce" is-open="openedDateOnce" datepicker-options="dateOptions" ng-required="true" close-text="Close"/>
                                                     <span class="input-group-btn">
                                                         <button type="button" class="btn btn-default" ng-click="openedDateOnce=true"><i class="glyphicon glyphicon-calendar"></i></button>
                                                     </span>
                                                 </p>
-                                            </div>                                            
+                                            </div>
                                         </div>
                                         <div class="col-sm-1 vcenter">
                                             <h5>à</h5>
@@ -282,25 +286,27 @@
                                             </div>
                                         </div>
                                     </div>
-                                    <div class="row">
+                                    <!--DAILY BASIS-->
+                                    <div class="row" ng-show="scheduleselected.data.type === 'daily'">
                                         <div class="col-sm-2 ">
                                             <h5>tous les </h5>
                                         </div>
                                         <div class="col-sm-2 ">
                                             <div class="form-group">
-                                                <input type="number" class="form-control" placeholder="x" min="1" max="1000">
+                                                <input type="number" ng-model="scheduleselected.data.daily.frequency"  min="1" max="1000">
                                             </div>
                                         </div>
                                         <div class="col-sm-2 ">
                                             <h5>jours</h5>
                                         </div>
                                     </div>
-                                    <div class="row">
+                                    <!--WEEKLY BASIS-->
+                                    <div class="row" ng-show="scheduleselected.data.type === 'weekly'">
                                         <div class="col-sm-2 ">
                                             <h5>tous les </h5>
                                         </div>
                                         <div class="form-group col-sm-2">
-                                            <input type="number" class="form-control" placeholder="x" min="1" max="100">
+                                            <input type="number" ng-model="scheduleselected.data.weekly.frequency"  min="1" max="100">
                                         </div>
                                         <div class="col-sm-8 ">
                                             <div class="btn-group">
@@ -314,12 +320,13 @@
                                             </div>
                                         </div>
                                     </div>
-                                    <div class="row">
+                                    <!--MONTHLY BASIS-->
+                                    <div class="row" ng-show="scheduleselected.data.type === 'monthly'">
                                         <div class="col-sm-2 ">
                                             <h5>tous les </h5>
                                         </div>
                                         <div class="form-group col-sm-2">
-                                            <select class="form-control" id="sel1">
+                                            <select class="form-control" ng-model="scheduleselected.data.monthly.frequency">
                                                 <option>premier</option>
                                                 <option>second</option>
                                                 <option>3-ème</option>
@@ -339,13 +346,14 @@
                                             </div>
                                         </div>
                                     </div>
-                                    <div class="row">
+                                    <!--MONTHLY BASIS II-->
+                                    <div class="row" ng-show="scheduleselected.data.type === 'monthlyii'">
                                         <div class="col-sm-2 ">
                                             <h5>tous les </h5>
                                         </div>
                                         <div class="col-sm-2 ">
                                             <div class="form-group">
-                                                <input type="number" class="form-control" placeholder="x" min="1" max="31">
+                                                <input type="number" ng-model="scheduleselected.data.monthlyii.frequency" min="1" max="31">
                                             </div>
                                         </div>
                                         <div class="col-sm-2 ">
@@ -354,23 +362,26 @@
                                     </div>
                                 </div>
                             </div>
+                            <!--=========================
+                            Type of repetition during day
+                            =========================-->
                             <div class="row">
                                 <div class="col-sm-2" style="z-index: 1">
                                     <h4>Durant la journée</h4>
                                 </div>
                                 <div class="col-sm-2" style="z-index: 1">
                                     <div class="radio">
-                                        <label><input type="radio" name="optradio">Une seule fois</label>
+                                        <label><input type="radio" ng-model="scheduleselected.data.typeForDay" value="onceForDay">Une seule fois</label>
                                     </div>
                                     <div class="radio">
-                                        <label><input type="radio" name="optradio">Toutes les x minutes</label>
+                                        <label><input type="radio" ng-model="scheduleselected.data.typeForDay" value="minutelyForDay">Toutes les x minutes</label>
                                     </div>
                                     <div class="radio">
-                                        <label><input type="radio" name="optradio">Toutes les x heures</label>
+                                        <label><input type="radio" ng-model="scheduleselected.data.typeForDay" value="hourlyForDay">Toutes les x heures</label>
                                     </div>
                                 </div>
                                 <div class="col-sm-8">
-                                    <div class="row">
+                                    <div class="row" ng-show="scheduleselected.data.typeForDay==='onceForDay'">
                                         <div class="col-sm-2 vcenter">
                                             <h5>à</h5>
                                         </div>
@@ -380,7 +391,7 @@
                                             </div>
                                         </div>
                                     </div>
-                                    <div class="row">
+                                    <div class="row" ng-show="scheduleselected.data.typeForDay==='minutelyForDay'  || scheduleselected.data.typeForDay==='hourlyForDay'">
                                         <div class="col-sm-2 ">
                                             <h5>fréquence</h5>
                                         </div>
@@ -390,7 +401,7 @@
                                             </div>
                                         </div>                                        
                                     </div>
-                                    <div class="row">
+                                    <div class="row" ng-show="scheduleselected.data.typeForDay==='minutelyForDay'  || scheduleselected.data.typeForDay==='hourlyForDay'">
                                         <div class="col-sm-2 vcenter">
                                             <h5>entre</h5>
                                         </div>
@@ -406,6 +417,9 @@
                                     </div>
                                 </div>
                             </div>
+                            <!--=========================
+                                validity period
+                            =========================-->
                             <div class="row">
                                 <div class="col-sm-2 vcenter" style="z-index: 1">
                                     <h4>Validité</h4>

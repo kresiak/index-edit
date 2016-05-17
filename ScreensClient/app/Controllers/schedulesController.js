@@ -15,7 +15,7 @@ app.controller("schedulesController", function ($scope, dataService) {
 
 
     var initEmptyScheduleElement = function () {
-        $scope.newSchedule = { id: "", data: { name: '' } };
+        $scope.newSchedule = { id: "", data: { name: '', type: 'once', typeForDay: 'hourlyForDay', once: {}, daily: { frequency: 1 }, weekly: { frequency: 1 }, monthly: { frequency: 'premier' }, monthlyii: { frequency: 1 } } };
         $scope.scheduleselected = $scope.newSchedule;
     }
     initEmptyScheduleElement();
@@ -65,6 +65,10 @@ app.controller("schedulesController", function ($scope, dataService) {
         return String.IsNullOrEmpty($scope.scheduleselected.data.name.Trim());
     }
 
+
+    $scope.akdebug = function(value) {
+        console.log(value);
+    }
 
 });
 
