@@ -270,7 +270,7 @@
                                         <div class="col-sm-4 vcenter">
                                             <div ng-controller="datePickerController">
                                                 <p class="input-group">
-                                                    <input type="text" class="form-control" uib-datepicker-popup ng-model="dateOnce" is-open="openedDateOnce" datepicker-options="dateOptions" ng-required="true" close-text="Close"/>
+                                                    <input type="text" ng-model="scheduleselected.data.once.date" class="form-control" uib-datepicker-popup ng-model="dateOnce" is-open="openedDateOnce" datepicker-options="dateOptions" ng-required="true" close-text="Close"/>
                                                     <span class="input-group-btn">
                                                         <button type="button" class="btn btn-default" ng-click="openedDateOnce=true"><i class="glyphicon glyphicon-calendar"></i></button>
                                                     </span>
@@ -282,7 +282,7 @@
                                         </div>
                                         <div class="col-sm-3 vcenter">
                                             <div class="form-group">
-                                                <uib-timepicker ng-model="xdfsfafds" ng-change="" hour-step="1" minute-step="1" show-meridian="true"></uib-timepicker>
+                                                <uib-timepicker ng-model="scheduleselected.data.once.time" ng-change="" hour-step="1" minute-step="1" show-meridian="true"></uib-timepicker>
                                             </div>
                                         </div>
                                     </div>
@@ -310,13 +310,13 @@
                                         </div>
                                         <div class="col-sm-8 ">
                                             <div class="btn-group">
-                                                <label class="btn btn-default" ng-model="checkModel.lundi" uib-btn-checkbox>lundi</label>
-                                                <label class="btn btn-default" ng-model="checkModel.mardi" uib-btn-checkbox>mardi</label>
-                                                <label class="btn btn-default" ng-model="checkModel.mercredi" uib-btn-checkbox>mercredi</label>
-                                                <label class="btn btn-default" ng-model="checkModel.jeudi" uib-btn-checkbox>jeudi</label>
-                                                <label class="btn btn-default" ng-model="checkModel.vendredi" uib-btn-checkbox>vendredi</label>
-                                                <label class="btn btn-default" ng-model="checkModel.samedi" uib-btn-checkbox>samedi</label>
-                                                <label class="btn btn-default" ng-model="checkModel.dimanche" uib-btn-checkbox>dimanche</label>
+                                                <label class="btn btn-default" ng-model="scheduleselected.data.weekly.lundi" uib-btn-checkbox>lundi</label>
+                                                <label class="btn btn-default" ng-model="scheduleselected.data.weekly.mardi" uib-btn-checkbox>mardi</label>
+                                                <label class="btn btn-default" ng-model="scheduleselected.data.weekly.mercredi" uib-btn-checkbox>mercredi</label>
+                                                <label class="btn btn-default" ng-model="scheduleselected.data.weekly.jeudi" uib-btn-checkbox>jeudi</label>
+                                                <label class="btn btn-default" ng-model="scheduleselected.data.weekly.vendredi" uib-btn-checkbox>vendredi</label>
+                                                <label class="btn btn-default" ng-model="scheduleselected.data.weekly.samedi" uib-btn-checkbox>samedi</label>
+                                                <label class="btn btn-default" ng-model="scheduleselected.data.weekly.dimanche" uib-btn-checkbox>dimanche</label>
                                             </div>
                                         </div>
                                     </div>
@@ -336,7 +336,7 @@
                                         </div>
                                         <div class="col-sm-8 ">
                                             <div class="btn-group">
-                                                <label class="btn btn-default" ng-model="radioModel" uib-btn-radio="'lundi'">lundi</label>
+                                                <label class="btn btn-default" ng-model="scheduleselected.data.monthly.weekday" uib-btn-radio="'lundi'">lundi</label>
                                                 <label class="btn btn-default" ng-model="radioModel" uib-btn-radio="'mardi'">mardi</label>
                                                 <label class="btn btn-default" ng-model="radioModel" uib-btn-radio="'mercredi'">mercredi</label>
                                                 <label class="btn btn-default" ng-model="radioModel" uib-btn-radio="'jeudi'">jeudi</label>
@@ -365,7 +365,7 @@
                             <!--=========================
                             Type of repetition during day
                             =========================-->
-                            <div class="row">
+                            <div class="row" ng-show="scheduleselected.data.type !== 'once'">
                                 <div class="col-sm-2" style="z-index: 1">
                                     <h4>Durant la journée</h4>
                                 </div>
@@ -387,32 +387,42 @@
                                         </div>
                                         <div class="col-sm-3 vcenter">
                                             <div class="form-group">
-                                                <uib-timepicker ng-model="timeInDayOnce" ng-change="" hour-step="1" minute-step="1" show-meridian="true"></uib-timepicker>
+                                                <uib-timepicker ng-model="scheduleselected.data.onceForDay.time" ng-change="" hour-step="1" minute-step="1" show-meridian="true"></uib-timepicker>
                                             </div>
                                         </div>
                                     </div>
-                                    <div class="row" ng-show="scheduleselected.data.typeForDay==='minutelyForDay'  || scheduleselected.data.typeForDay==='hourlyForDay'">
+                                    <div class="row" ng-show="scheduleselected.data.typeForDay==='minutelyForDay'">
                                         <div class="col-sm-2 ">
                                             <h5>fréquence</h5>
                                         </div>
                                         <div class="col-sm-3 ">
                                             <div class="form-group">
-                                                <input type="number" class="form-control" placeholder="entrer la fréquence x" min="1" max="60">
+                                                <input type="number" ng-model="scheduleselected.data.minutelyForDay.frequency" class="form-control" placeholder="entrer la fréquence x" min="1" max="1000">
                                             </div>
                                         </div>                                        
+                                    </div>
+                                    <div class="row" ng-show="scheduleselected.data.typeForDay==='hourlyForDay'">
+                                        <div class="col-sm-2 ">
+                                            <h5>fréquence</h5>
+                                        </div>
+                                        <div class="col-sm-3 ">
+                                            <div class="form-group">
+                                                <input type="number" ng-model="scheduleselected.data.hourlyForDay.frequency" class="form-control" placeholder="entrer la fréquence x" min="1" max="12">
+                                            </div>
+                                        </div>
                                     </div>
                                     <div class="row" ng-show="scheduleselected.data.typeForDay==='minutelyForDay'  || scheduleselected.data.typeForDay==='hourlyForDay'">
                                         <div class="col-sm-2 vcenter">
                                             <h5>entre</h5>
                                         </div>
                                         <div class="col-sm-3 vcenter">
-                                            <uib-timepicker ng-model="timeInDayEnd" ng-change="" hour-step="1" minute-step="1" show-meridian="true"></uib-timepicker>
+                                            <uib-timepicker ng-model="scheduleselected.data.validityinday.start" ng-change="" hour-step="1" minute-step="1" show-meridian="true"></uib-timepicker>
                                         </div>
                                         <div class="col-sm-1 vcenter">
                                             <h5>et</h5>
                                         </div>
                                         <div class="col-sm-3 vcenter">
-                                            <uib-timepicker ng-model="timeInDayEnd" ng-change="" hour-step="1" minute-step="1" show-meridian="true"></uib-timepicker>
+                                            <uib-timepicker ng-model="scheduleselected.data.validityinday.end" ng-change="" hour-step="1" minute-step="1" show-meridian="true"></uib-timepicker>
                                         </div>
                                     </div>
                                 </div>
@@ -420,14 +430,14 @@
                             <!--=========================
                                 validity period
                             =========================-->
-                            <div class="row">
+                            <div class="row" ng-show="scheduleselected.data.type !== 'once'">
                                 <div class="col-sm-2 vcenter" style="z-index: 1">
                                     <h4>Validité</h4>
                                 </div>
                                 <div class="col-sm-2 vcenter" style="z-index: 1">
                                     <div ng-controller="datePickerController">
                                         <p class="input-group">
-                                            <input type="text" class="form-control" uib-datepicker-popup ng-model="dateStart" is-open="openedStart" datepicker-options="dateOptions" ng-required="true" close-text="Close"/>
+                                            <input type="text" class="form-control" uib-datepicker-popup ng-model="scheduleselected.data.validity.dateStart" is-open="openedStart" datepicker-options="dateOptions" ng-required="true" close-text="Close"/>
                                             <span class="input-group-btn">
                                                 <button type="button" class="btn btn-default" ng-click="openedStart=true"><i class="glyphicon glyphicon-calendar"></i></button>
                                             </span>
@@ -435,13 +445,13 @@
                                     </div>
                                 </div>
                                 <div class="col-sm-2 vcenter">
-                                    <uib-timepicker ng-model="timeStart" ng-change="" hour-step="1" minute-step="1" show-meridian="true"></uib-timepicker>
+                                    <uib-timepicker ng-model="scheduleselected.data.validity.timeStart" ng-change="" hour-step="1" minute-step="1" show-meridian="true"></uib-timepicker>
                                 </div>
                                 <div class="col-sm-1 vcenter">à</div>
                                 <div class="col-sm-2 vcenter">
                                     <div ng-controller="datePickerController">
                                         <p class="input-group">
-                                            <input type="text" class="form-control" uib-datepicker-popup ng-model="dateEnd" is-open="openedEnd" datepicker-options="dateOptions" ng-required="true" close-text="Close"/>
+                                            <input type="text" class="form-control" uib-datepicker-popup ng-model="scheduleselected.data.validity.dateEnd" is-open="openedEnd" datepicker-options="dateOptions" ng-required="true" close-text="Close"/>
                                             <span class="input-group-btn">
                                                 <button type="button" class="btn btn-default" ng-click="openedEnd=true"><i class="glyphicon glyphicon-calendar"></i></button>
                                             </span>
@@ -449,7 +459,7 @@
                                     </div>
                                 </div>
                                 <div class="col-sm-2 vcenter">
-                                    <uib-timepicker ng-model="timeEnd" ng-change="" hour-step="1" minute-step="1" show-meridian="true"></uib-timepicker>
+                                    <uib-timepicker ng-model="scheduleselected.data.validity.timeEnd" ng-change="" hour-step="1" minute-step="1" show-meridian="true"></uib-timepicker>
                                 </div>
                             </div>
 
