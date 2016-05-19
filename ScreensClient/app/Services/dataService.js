@@ -27,9 +27,24 @@ app.factory('dataService', ['configService', '$http', function (configService, $
         return $http.put(urlprefix + table + '/' + id, record);
     }
 
+    function crudDeleteRecord(table, id) {
+        return $http.delete(urlprefix + table + '/' + id);
+    }
+
     function crudGetRecords(table) {
         return $http.get(urlprefix + table);
     }
+
+    function crudGetTable(table) {
+        return $http.get(urlprefix + table).then(function (response) {
+            var obj = {};
+            response.data.forEach(function (record) {
+                obj[record.id] = record.data;
+            });
+            return obj;
+        });
+    }
+
 
 
     dataServicefactory.getResult = getResult;
@@ -37,6 +52,8 @@ app.factory('dataService', ['configService', '$http', function (configService, $
     dataServicefactory.crudCreateRecord = crudCreateRecord;
     dataServicefactory.crudGetRecords = crudGetRecords;
     dataServicefactory.crudUpdateRecord = crudUpdateRecord;
+    dataServicefactory.crudGetTable = crudGetTable;
+    dataServicefactory.crudDeleteRecord = crudDeleteRecord;
 
 
     return dataServicefactory;
