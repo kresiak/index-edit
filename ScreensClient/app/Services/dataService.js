@@ -5,8 +5,7 @@ app.factory('dataService', ['configService', '$http', function (configService, $
 
     var urlprefix = configService.getServerPath();
 
-    function getFileList() 
-    {
+    function getFileList() {
 
         var loadDataFromServer = function () { // returns a promise
             return $http.get(urlprefix + 'files');
@@ -35,14 +34,12 @@ app.factory('dataService', ['configService', '$http', function (configService, $
         return $http.get(urlprefix + table);
     }
 
-    function crudGetTable(table) {
-        return $http.get(urlprefix + table).then(function (response) {
-            var obj = {};
-            response.data.forEach(function (record) {
-                obj[record.id] = record.data;
-            });
-            return obj;
+    function transformIntoDictionary(records) {
+        var obj = {};
+        records.forEach(function (record) {
+            obj[record.id] = record.data;
         });
+        return obj;
     }
 
 
@@ -52,7 +49,7 @@ app.factory('dataService', ['configService', '$http', function (configService, $
     dataServicefactory.crudCreateRecord = crudCreateRecord;
     dataServicefactory.crudGetRecords = crudGetRecords;
     dataServicefactory.crudUpdateRecord = crudUpdateRecord;
-    dataServicefactory.crudGetTable = crudGetTable;
+    dataServicefactory.transformIntoDictionary = transformIntoDictionary;
     dataServicefactory.crudDeleteRecord = crudDeleteRecord;
 
 

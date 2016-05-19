@@ -78,7 +78,7 @@ app.controller("sequencesController", function ($scope, dataService) {
     }
 
     // =====================
-    // Handle Selcted items
+    // Handle Selected items
     // =====================
 
     $scope.sequenceFileIdSelected = null;
