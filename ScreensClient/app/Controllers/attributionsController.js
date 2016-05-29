@@ -6,40 +6,73 @@ app.controller("attributionsController", function ($scope, dataService, $q) {
     $scope.attributionReady = false;
     $scope.isAddOptionCollapsed = true;
 
+    var screensDict, sequencesDict, schedulesDict, attributions, sequences;
+    var seqselected = $scope.seqselected;
+
+    if (seqselected) {
+        $scope.$watch('seqselected',
+            function (newValue, oldValue) {
+                seqselected = newValue;
+                filterData();
+            });
+    }
+
+    $scope.isRestricted= function() {
+        return seqselected;
+    }
+
+    function filterData() {
+        if (seqselected) {
+            $scope.attributionsToDisplay = attributions.filter(function(attr) {
+                return attr.sequenceId === seqselected.id;
+            });
+            $scope.sequencesToDisplay = sequences.filter(function (seq) {
+                return seq.id === seqselected.id;
+            });
+        } else {
+            $scope.attributionsToDisplay = attributions;
+            $scope.sequencesToDisplay = sequences;
+        }
+    }
+
     function initData() {
         promises.push(dataService.crudGetRecords('screens').then(function (response) {
             $scope.screens = response.data;
-            $scope.screensDict = dataService.transformIntoDictionary($scope.screens);
+            screensDict = dataService.transformIntoDictionary($scope.screens);
         }));
 
         promises.push(dataService.crudGetRecords('sequences').then(function (response) {
-            $scope.sequences = response.data;
-            $scope.sequencesDict = dataService.transformIntoDictionary($scope.sequences);
+            sequences = response.data;
+            sequencesDict = dataService.transformIntoDictionary(sequences);
         }));
 
         promises.push(dataService.crudGetRecords('schedules').then(function (response) {
             $scope.schedules = response.data;
-            $scope.schedulesDict = dataService.transformIntoDictionary($scope.schedules);
-        }));
-
-        promises.push(dataService.crudGetRecords(tablename).then(function (response) {
-            $scope.attributions = response.data.map(function (attr) {
-                return {
-                    id: attr.id,
-                    screen: $scope.screensDict[attr.data.screen].name,
-                    sequence: $scope.sequencesDict[attr.data.sequence].name,
-                    schedule: $scope.schedulesDict[attr.data.schedule].name
-                }
-            });
+            schedulesDict = dataService.transformIntoDictionary($scope.schedules);
         }));
 
         $q.all(promises)
             .then(function () {
-                $scope.attributionReady = true;
+                dataService.crudGetRecords(tablename).then(function (response) {
+                    attributions = response.data.map(function (attr) {
+                        return {
+                            id: attr.id,
+                            screen: screensDict[attr.data.screen].name,
+                            sequence: sequencesDict[attr.data.sequence].name,
+                            schedule: schedulesDict[attr.data.schedule].name,
+                            sequenceId: attr.data.sequence
+                        }
+                    });
+                    filterData();
+                    $scope.attributionReady = true;
+                });                
             });
     }
 
+
+
     initData();
+
 
 
     $scope.deleteAttribution= function(id) {
