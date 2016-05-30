@@ -1,6 +1,6 @@
 ﻿'use strict';
 
-app.controller("attributionsController", function ($scope, dataService, $q) {
+app.controller("attributionsController", function ($scope, $rootScope, dataService, $q) {
     var promises = [];
     var tablename = 'attributions';
     $scope.attributionReady = false;
@@ -16,6 +16,11 @@ app.controller("attributionsController", function ($scope, dataService, $q) {
                 filterData();
             });
     }
+
+    $scope.$on("attributionChange", function (event, args) {
+        initAttributionData();
+    });
+
 
     $scope.isRestricted= function() {
         return seqselected;
@@ -33,6 +38,22 @@ app.controller("attributionsController", function ($scope, dataService, $q) {
             $scope.attributionsToDisplay = attributions;
             $scope.sequencesToDisplay = sequences;
         }
+    }
+
+    function initAttributionData() {
+        dataService.crudGetRecords(tablename).then(function (response) {
+            attributions = response.data.map(function (attr) {
+                return {
+                    id: attr.id,
+                    screen: screensDict[attr.data.screen].name,
+                    sequence: sequencesDict[attr.data.sequence].name,
+                    schedule: schedulesDict[attr.data.schedule].name,
+                    sequenceId: attr.data.sequence
+                }
+            });
+            filterData();
+            $scope.attributionReady = true;
+        });
     }
 
     function initData() {
@@ -53,19 +74,7 @@ app.controller("attributionsController", function ($scope, dataService, $q) {
 
         $q.all(promises)
             .then(function () {
-                dataService.crudGetRecords(tablename).then(function (response) {
-                    attributions = response.data.map(function (attr) {
-                        return {
-                            id: attr.id,
-                            screen: screensDict[attr.data.screen].name,
-                            sequence: sequencesDict[attr.data.sequence].name,
-                            schedule: schedulesDict[attr.data.schedule].name,
-                            sequenceId: attr.data.sequence
-                        }
-                    });
-                    filterData();
-                    $scope.attributionReady = true;
-                });                
+                initAttributionData();
             });
     }
 
@@ -77,7 +86,7 @@ app.controller("attributionsController", function ($scope, dataService, $q) {
 
     $scope.deleteAttribution= function(id) {
         dataService.crudDeleteRecord(tablename, id).then(function() {
-            initData();
+            $rootScope.$broadcast('attributionChange', { });
         });        
     }
 
@@ -89,7 +98,7 @@ app.controller("attributionsController", function ($scope, dataService, $q) {
                 sequence: $scope.seqselected.id,
                 schedule: $scope.scheduleselected.id
             }).then(function () {
-                initData();
+                $rootScope.$broadcast('attributionChange', {});
             });
         }
     }
