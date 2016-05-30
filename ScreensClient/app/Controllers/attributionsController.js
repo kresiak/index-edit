@@ -7,12 +7,12 @@ app.controller("attributionsController", function ($scope, $rootScope, dataServi
     $scope.isAddOptionCollapsed = true;
 
     var screensDict, sequencesDict, schedulesDict, attributions, sequences;
-    var seqselected = $scope.seqselected;
+    var masterseqselected = $scope.seqselected;
 
-    if (seqselected) {
+    if (masterseqselected) {
         $scope.$watch('seqselected',
             function (newValue, oldValue) {
-                seqselected = newValue;
+                masterseqselected = newValue;
                 filterData();
             });
     }
@@ -23,16 +23,16 @@ app.controller("attributionsController", function ($scope, $rootScope, dataServi
 
 
     $scope.isRestricted= function() {
-        return seqselected;
+        return masterseqselected;
     }
 
     function filterData() {
-        if (seqselected) {
+        if (masterseqselected) {
             $scope.attributionsToDisplay = attributions.filter(function(attr) {
-                return attr.sequenceId === seqselected.id;
+                return attr.sequenceId === masterseqselected.id;
             });
             $scope.sequencesToDisplay = sequences.filter(function (seq) {
-                return seq.id === seqselected.id;
+                return seq.id === masterseqselected.id;
             });
         } else {
             $scope.attributionsToDisplay = attributions;
@@ -90,13 +90,15 @@ app.controller("attributionsController", function ($scope, $rootScope, dataServi
         });        
     }
 
+    var screenselected, seqselected, scheduleselected;
+
     $scope.addAttribution = function () {
         if ($scope.addAttributionPossible()) {
             dataService.crudCreateRecord(tablename,
             {
-                screen: $scope.screenselected.id,
-                sequence: $scope.seqselected.id,
-                schedule: $scope.scheduleselected.id
+                screen: screenselected.id,
+                sequence: seqselected.id,
+                schedule: scheduleselected.id
             }).then(function () {
                 $rootScope.$broadcast('attributionChange', {});
             });
@@ -107,33 +109,34 @@ app.controller("attributionsController", function ($scope, $rootScope, dataServi
     // Handle Selected items
     // =====================
 
+
     $scope.screenSelected = function (screen) {
-        $scope.screenselected = screen;
+        screenselected = screen;
     }
 
     $scope.isScreenTheActiveOne = function (screen) {
-        return $scope.screenselected === screen;
+        return screenselected === screen;
     }
 
 
     $scope.sequenceSelected = function (seq) {
-        $scope.seqselected = seq;
+        seqselected = seq;
     }
 
     $scope.isSequenceTheActiveOne = function (seq) {
-        return $scope.seqselected === seq;
+        return seqselected === seq;
     }
 
     $scope.scheduleSelected = function (schedule) {
-        $scope.scheduleselected = schedule;
+        scheduleselected = schedule;
     }
 
     $scope.isScheduleTheActiveOne = function (schedule) {
-        return $scope.scheduleselected === schedule;
+        return scheduleselected === schedule;
     }
 
     $scope.addAttributionPossible= function() {
-        return $scope.screenselected && $scope.scheduleselected && $scope.seqselected;
+        return screenselected && scheduleselected && seqselected;
     }
 
 });
