@@ -199,8 +199,8 @@
                                     <!--==================
                                     programmation
                                     ==================-->
-                                    <uib-tab index="2" heading="Programmation" select="setTab(2)">
-                                        <div ng-include="'app/templates/attribution.html'"></div>
+                                    <uib-tab index="2" ng-hide="isNewSequenceSelected()" heading="Programmation" select="setTab(2)">
+                                        <div ng-hide="isNewSequenceSelected()" ng-include="'app/templates/attribution.html'"></div>
                                     </uib-tab>
                                 </uib-tabset>
                             </div>

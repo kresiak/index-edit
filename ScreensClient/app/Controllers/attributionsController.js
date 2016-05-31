@@ -21,6 +21,10 @@ app.controller("attributionsController", function ($scope, $rootScope, dataServi
         initAttributionData();
     });
 
+    $scope.$on("sequenceChange", function (event, args) {
+        initData();
+    });
+
 
     $scope.isRestricted= function() {
         return masterseqselected;

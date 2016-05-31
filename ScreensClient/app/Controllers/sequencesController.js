@@ -1,6 +1,6 @@
 ﻿'use strict';
 
-app.controller("sequencesController", function ($scope, dataService) {
+app.controller("sequencesController", function ($scope, $rootScope, dataService) {
 
     $scope.dateOptions = {
         dateDisabled: false,
@@ -28,6 +28,10 @@ app.controller("sequencesController", function ($scope, dataService) {
     }
     initEmptySeqElement();
     
+
+    $scope.isNewSequenceSelected= function() {
+        return ! $scope.seqselected.id;
+    }
 
 
     $scope.getFileInfoById= function(id) {
@@ -59,6 +63,7 @@ app.controller("sequencesController", function ($scope, dataService) {
                 initEmptySeqElement();
                 $scope.sequenceFileIdSelected = null;
                 $scope.candidateFileIdSelected = null;
+                $rootScope.$broadcast('sequenceChange', {});
             }, function (response) { });
         }       
     }
