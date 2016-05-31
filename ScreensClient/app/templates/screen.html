@@ -1,0 +1,26 @@
+﻿<div class="panel" ng-controller="screensController">
+    <div class="panel-body" ng-show="allReady">
+        <div class="row">
+            <div class="col-sm-4">
+                <div style="margin: 50px 20px">
+                    <div class="list-group">
+                        <!--REPEAT-->
+                        <a ng-repeat="screen in screens" class="list-group-item" ng-click="screenSelected(screen)" ng-class="{active:isScreenTheActiveOne(screen)}">{{screen.data.name}}</a>
+                    </div>
+                </div>
+            </div>
+            <div class="col-sm-8">
+                <div style="margin: 50px 20px;height: 305px" >
+                    <uib-carousel interval="2000" active="activeSlide">
+                        <uib-slide ng-repeat="img in slides" index="$index" >
+                            <img ng-src="{{img.url}}" style="margin:auto;">
+                            <div class="carousel-caption">
+                                <p>{{img.name}}</p>
+                            </div>
+                        </uib-slide>                        
+                    </uib-carousel>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

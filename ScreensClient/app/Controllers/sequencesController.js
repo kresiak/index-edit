@@ -34,15 +34,6 @@ app.controller("sequencesController", function ($scope, $rootScope, dataService)
     }
 
 
-    $scope.getFileInfoById= function(id) {
-        var list = $scope.filesInDb.filter(function(file) {
-            return file.id === id;
-        });
-
-        if (list.length !== 1) throw 'file info not found: unknown id';
-
-        return list[0];
-    }
 
     $scope.getCandidateFiles = function (currentSeq) {
         if (!$scope.filesInDb) return [];
