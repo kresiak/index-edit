@@ -37,3 +37,18 @@ img.galery:hover{
     vertical-align: middle;
     float: none;
 }
+
+#logosGIGA img {
+    float: left;
+}
+
+#logosGIGA #ulgLogo {
+    padding: 10px 0 0 5px;
+    width: 120px;
+}
+
+.top-nav {
+    background: #FFF;
+    padding: 10px;
+    margin-bottom: 0;
+}

@@ -42,7 +42,28 @@
 </head>
 <body ng-controller="mainController">
 
-    <uib-tabset active="tabNo">
+    <nav class="navbar navbar-default top-nav" role="navigation">
+        <div id="headerGiga" class="container">
+            <div class="row">
+                <div class="col-sm-4">
+                    <div id="logosGIGA">
+                        <a href="http://www.giga.ulg.ac.be/">
+                            <img src="images/GIGAlogo.png"/>
+                        </a>
+                        <a target="_blank" href="http://www.ulg.ac.be">
+                            <img id="ulgLogo" src="images/ULglogo.gif"/>
+                        </a>
+                    </div>
+                </div>
+                <div class="col-sm-8">
+                    <h1>Les écrans du Giga</h1>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+
+<uib-tabset active="tabNo">
         <uib-tab index="0" heading="Fichiers et Images" select="setTab(0)">
             <div class="panel panel-info" ng-show="screenNo==1" ng-controller="filesController">
                 <div class="panel-heading">
