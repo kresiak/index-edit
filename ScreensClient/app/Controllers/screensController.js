@@ -2,7 +2,7 @@
 
 app.controller("screensController", function($scope, dataService, $q) {
     var promises = [];
-    //$scope.active = 0;
+    $scope.slides = [];
 
     var screensDict, sequencesDict, schedulesDict, attributions, attributionsDict, sequences, schedules;
 
@@ -30,9 +30,24 @@ app.controller("screensController", function($scope, dataService, $q) {
         $q.all(promises)
             .then(function () {
                 $scope.allReady = true;
-                var seq = sequences[0];
+            });
+    }
+
+    initData();
+
+
+    var screenSelected;
+
+    $scope.screenSelected = function (screen) {
+        function initSlides(screen) {
+            var attributionsToScreen = attributions.filter(function(attr) {
+                return attr.data.screen === screen.id;
+            });
+
+            if (attributionsToScreen.length > 0) {
+                var seq = sequencesDict[attributionsToScreen[0].data.sequence];
                 var count = 0;
-                $scope.slides = seq.data.files.map(function (fileid) {
+                $scope.slides = seq.files.map(function (fileid) {
                     count++;
                     return {
                         id: count,
@@ -40,15 +55,13 @@ app.controller("screensController", function($scope, dataService, $q) {
                         name: $scope.getFileInfoById(fileid).filename
                     };
                 });
-            });
-    }
+            } else {
+                $scope.slides = [];
+            }
+        }
 
-    initData();
-
-    var screenSelected;
-
-    $scope.screenSelected = function (screen) {
         screenSelected = screen;
+        initSlides(screen);
     }
 
     $scope.isScreenTheActiveOne = function (screen) {
