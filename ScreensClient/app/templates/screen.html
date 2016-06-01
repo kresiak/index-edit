@@ -10,10 +10,10 @@
                 </div>
             </div>
             <div class="col-sm-8">
-                <div style="margin: 50px 20px;height: 305px" >
+                <div style="margin: 50px 20px" >
                     <uib-carousel interval="2000" active="activeSlide">
                         <uib-slide ng-repeat="img in slides" index="$index" >
-                            <img ng-src="{{img.url}}" style="margin:auto;">
+                            <img ng-src="{{img.url}}" style="margin:auto; width: 500px;height: 300px">
                             <div class="carousel-caption">
                                 <p>{{img.name}}</p>
                             </div>
