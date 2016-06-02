@@ -44,8 +44,10 @@ app.controller("screensController", function($scope, dataService, $q) {
                 return attr.data.screen === screen.id;
             });
 
+            $scope.seqTitle = '<rien du tout>';
             if (attributionsToScreen.length > 0) {
                 var seq = sequencesDict[attributionsToScreen[0].data.sequence];
+                $scope.seqTitle = seq.name;
                 var count = 0;
                 $scope.slides = seq.files.map(function (fileid) {
                     count++;
