@@ -1,0 +1,520 @@
+﻿<!DOCTYPE html>
+<!--<html xmlns="http://www.w3.org/1999/xhtml" ng-app="vocApp">-->
+<html xmlns="http://www.w3.org/1999/xhtml" ng-app="screenApp">
+<!--manifest="vocapp.appcache">-->
+<head>
+    <title>Vocabulary</title>
+
+    <link rel="stylesheet" href="Css/bootstrap.css" />
+
+    <link rel="stylesheet" href="Css/ak.css" />
+
+    <!--Angular stuff-->
+    <script src="Scripts/angular.js"></script>
+
+    <script src="Scripts/angular-ui-router.min.js"></script>
+    <script src="Scripts/angular-local-storage.min.js"></script>
+
+    <script src="Scripts/angular-animate.min.js"></script>
+    <script src="Scripts/angular-touch.min.js"></script>
+    <script src="Scripts/ui-bootstrap-tpls-1.2.4.min.js"></script>
+
+
+    <!--Main code App-->
+    <script src="app/appBootAngular.js"></script>
+
+    <script src="app/Classes/dataClasses.js"></script>
+
+    <script src="app/Services/dataService.js"></script>
+    <script src="app/Services/configService.js"></script>
+
+    <script src="app/Controllers/mainController.js"></script>
+    <script src="app/Controllers/filesController.js"></script>
+    <script src="app/Controllers/sequencesController.js"></script>
+    <script src="app/Controllers/schedulesController.js"></script>
+    <script src="app/Controllers/attributionsController.js"></script>
+    <script src="app/Controllers/datePickerController.js"></script>
+    <script src="app/Controllers/screensController.js"></script>
+
+    <script src="app/filters.js"></script>
+
+
+</head>
+<body ng-controller="mainController">
+
+    <nav class="navbar navbar-default top-nav" role="navigation">
+        <div id="headerGiga" class="container">
+            <div class="row">
+                <div class="col-sm-4">
+                    <div id="logosGIGA">
+                        <a href="http://www.giga.ulg.ac.be/">
+                            <img src="images/GIGAlogo.png" />
+                        </a>
+                        <a target="_blank" href="http://www.ulg.ac.be">
+                            <img id="ulgLogo" src="images/ULglogo.gif" />
+                        </a>
+                    </div>
+                </div>
+                <div class="col-sm-8">
+                    <h1>Les écrans du Giga</h1>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+
+    <uib-tabset active="tabNo">
+        <uib-tab index="0" heading="Fichiers et Images" select="setTab(0)">
+            <div class="panel panel-info" ng-show="screenNo==1" ng-controller="filesController">
+                <div class="panel-heading">
+                    <div class="btn-group">
+                        <label class="btn btn-primary" ng-model="viewType" uib-btn-radio="'0'" ng-click="changeViewType('0')">Unregistered images</label>
+                        <label class="btn btn-primary" ng-model="viewType" uib-btn-radio="'1'" ng-click="changeViewType('1')">Registered images</label>
+                    </div>
+                    <button type="button" class="btn btn-warning" ng-click="saveFileList()">Sauver les changements</button>
+                    <div ng-show="!String.IsNullOrEmpty(msg.Trim())">{{msg}}</div>
+                </div>
+                <div class="panel-body">
+                    <div class="row" ng-repeat="file in getFiles()">
+                        <div class="col-sm-1" style="z-index: 2">
+                            <img ng-src="{{getFileUrl(file.filename)}}" class="galery" />
+                        </div>
+                        <div class="col-sm-2" style="z-index: 1">
+                            <div class="form-group">
+                                <input type="text" class="form-control" placeholder="nom de l'image" ng-model="file.ourname">
+                            </div>
+                        </div>
+                        <div class="col-sm-2" style="z-index: 1">
+                            <div class="form-group">
+                                <input type="text" class="form-control" placeholder="durée en secondes" ng-model="file.duration">
+                            </div>
+                        </div>
+                        <div class="col-sm-6">
+                            <div class="form-group">
+                                <textarea type="text" class="form-control" placeholder="description" rows="3" ng-model="file.comment"></textarea>
+                            </div>
+                        </div>
+                        <div class="col-sm-1">
+                            <label class="checkbox-inline"><input type="checkbox" value="" ng-model="file.activated">Activé</label>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="panel panel-success" ng-show="screenNo==10">
+                <div class="panel-heading">
+                    <h3>other</h3>
+                </div>
+                <div class="panel-body">
+                </div>
+            </div>
+
+        </uib-tab>
+
+        <!--********************************************************************-->
+        <uib-tab index="1" heading="Séquences d'images" select="setTab(1)">
+            <div ng-controller="sequencesController">
+                <div class="row">
+                    <!--================================
+                    Choose a sequence or create one
+                    ================================-->
+                    <div class="col-sm-4">
+                        <div style="margin: 50px 20px">
+                            <div class="list-group">
+                                <a class="list-group-item" ng-click="sequenceSelected()" ng-class="{active:isSequenceTheActiveOne()}">< Créer une nouvelle séquence></a>
+                                <!--REPEAT-->
+                                <a ng-repeat="seq in sequences" class="list-group-item" ng-click="sequenceSelected(seq)" ng-class="{active:isSequenceTheActiveOne(seq)}">{{seq.data.name}} ({{seq.data.comment}})</a>
+                            </div>
+                        </div>
+                    </div>
+                    <!--================================
+                    Detail of a Sequence
+                    ================================-->
+                    <div class="col-sm-8">
+                        <div style="margin: 50px 20px">
+                            <!--=========================
+                            Properties of a sequence
+                            =========================-->
+                            <div class="row">
+                                <div class="col-sm-3" style="z-index: 1">
+                                    <div class="form-group">
+                                        <input type="text" class="form-control" placeholder="nom de la séquence" ng-model="seqselected.data.name">
+                                    </div>
+                                </div>
+                                <div class="col-sm-6">
+                                    <div class="form-group">
+                                        <textarea type="text" class="form-control" placeholder="description" rows="3" ng-model="seqselected.data.comment"></textarea>
+                                    </div>
+                                </div>
+                                <div class="col-sm-1">
+                                    <label class="checkbox-inline"><input type="checkbox" value="" ng-model="seqselected.data.activated">Activé</label>
+                                </div>
+                                <div class="col-sm-2">
+                                    <button type="button" class="btn btn-danger" ng-click="saveSequence()" ng-disabled="isSequenceNameEmpty()">Sauver la sequence</button>
+                                </div>
+                            </div>
+                            <!--=======================
+                            Images of a sequence
+                            =========================-->
+                            <div class="row">
+                                <uib-tabset active="tabNo">
+                                    <!--==================
+                                    Selected pictures
+                                    ==================-->
+                                    <uib-tab index="0" heading="Images sélectionnées" select="setTab(0)">
+                                        <div class="col-sm-6">
+                                            <div class="row">
+                                                <!--REPEAT-->
+                                                <div ng-repeat="fileid in seqselected.data.files" class="col-sm-4">
+                                                    <div class="thumbnail" ng-click="sequenceFileSelected(fileid)" ng-class="{active:isSequenceFileTheActiveOne(fileid)}">
+                                                        <img class="img-thumbnail" ng-src="{{getFileUrl(getFileInfoById(fileid).filename)}}" />
+                                                        <div style="text-align: center;">{{getFileInfoById(fileid).ourname}}</div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="col-sm-6">
+                                            <div ng-show="!isSequenceFileTheActiveOne(null)" style="margin: 50px 20px">
+                                                <div class="btn-group-vertical" role="group" aria-label="...">
+                                                    <button type="button" class="btn btn-danger" ng-click="removeCurrentImageFromSelection()">Supprimer de la séquence</button>
+                                                    <button type="button" class="btn btn-info" ng-click="MoveUpCurrentImageInSelection()">Monter dans la séquence</button>
+                                                    <button type="button" class="btn btn-info" ng-click="MoveDownCurrentImageInSelection()">Descendre dans la séquence</button>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="jumbotron" ng-show="! seqselected || seqselected.data.files.length==0">
+                                            <div class="container">
+                                                <h4>Pas encore d'images sélectionnées</h4>
+                                            </div>
+                                        </div>
+                                    </uib-tab>
+                                    <!--==================
+                                    NOT selected pictures
+                                    ==================-->
+                                    <uib-tab index="1" heading="Images à ajouter" select="setTab(1)">
+
+                                        <div class="col-sm-6">
+                                            <div class="row">
+                                                <!--REPEAT-->
+                                                <div ng-repeat="fileinfo in getCandidateFiles(seqselected)" class="col-sm-4">
+                                                    <div class="thumbnail" ng-click="candidateFileSelected(fileinfo)" ng-class="{active:isCandidateFileTheActiveOne(fileinfo)}">
+                                                        <img class="img-thumbnail" ng-src="{{getFileUrl(fileinfo.filename)}}" />
+                                                        <div style="text-align: center;">{{fileinfo.ourname}}</div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="col-sm-6">
+                                            <div ng-show="!isCandidateFileTheActiveOne(null)" style="margin: 50px 20px">
+                                                <div class="btn-group-vertical" role="group" aria-label="...">
+                                                    <button type="button" class="btn btn-danger" ng-click="addCurrentImageToSelection()">Ajouter à la séquence</button>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="jumbotron" ng-show="seqselected && getCandidateFiles(seqselected).length==0">
+                                            <div class="container">
+                                                <h4>Toutes les images ont été sélectionnées</h4>
+                                            </div>
+                                        </div>
+
+                                    </uib-tab>
+                                    <!--==================
+                                    programmation
+                                    ==================-->
+                                    <uib-tab index="2" ng-hide="isNewSequenceSelected()" heading="Programmation" select="setTab(2)">
+                                        <div ng-hide="isNewSequenceSelected()" ng-include="'app/templates/attribution.html'"></div>
+                                    </uib-tab>
+                                </uib-tabset>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </uib-tab>
+        <uib-tab index="2" heading="Programmation" select="setTab(2)">
+            <div ng-controller="schedulesController">
+                <div class="row">
+                    <!--================================
+                    Choose a schedule or create one
+                    ================================-->
+                    <div class="col-sm-3">
+                        <div style="margin: 50px 20px">
+                            <div class="list-group">
+                                <a class="list-group-item" ng-click="scheduleSelected()" ng-class="{active:isScheduleTheActiveOne()}">< Créer une nouvelle programmation></a>
+                                <!--REPEAT-->
+                                <a ng-repeat="schedule in schedules" class="list-group-item" ng-click="scheduleSelected(schedule)" ng-class="{active:isScheduleTheActiveOne(schedule)}">{{schedule.data.name}} ({{schedule.data.comment}})</a>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-sm-9">
+                        <div style="margin: 50px 20px">
+                            <!--=========================
+                            Properties of a scheduling
+                            =========================-->
+                            <div class="row">
+                                <div class="col-sm-3" style="z-index: 1">
+                                    <div class="form-group">
+                                        <input type="text" class="form-control" placeholder="nom de la programmation" ng-model="scheduleselected.data.name">
+                                    </div>
+                                </div>
+                                <div class="col-sm-6">
+                                    <div class="form-group">
+                                        <textarea type="text" class="form-control" placeholder="description" rows="3" ng-model="scheduleselected.data.comment"></textarea>
+                                    </div>
+                                </div>
+                                <div class="col-sm-3">
+                                    <button type="button" class="btn btn-danger" ng-click="saveSchedule()" ng-disabled="isScheduleNameEmpty()">Sauver la programmation</button>
+                                </div>
+                            </div>
+                            <!--=========================
+                            Types of repetition
+                            =========================-->
+                            <div class="row">
+                                <div class="col-sm-2" style="z-index: 1">
+                                    <h4>Répétition</h4>
+                                </div>
+                                <div class="col-sm-2" style="z-index: 1">
+                                    <div class="radio">
+                                        <label><input type="radio" ng-model="scheduleselected.data.type" value="once">Une seule fois</label>
+                                    </div>
+                                    <div class="radio">
+                                        <label><input type="radio" ng-model="scheduleselected.data.type" value="daily">Journalière</label>
+                                    </div>
+                                    <div class="radio">
+                                        <label><input type="radio" ng-model="scheduleselected.data.type" value="weekly">Hebdomadaire</label>
+                                    </div>
+                                    <div class="radio">
+                                        <label><input type="radio" ng-model="scheduleselected.data.type" value="monthly">Mensuelle</label>
+                                    </div>
+                                    <div class="radio">
+                                        <label><input type="radio" ng-model="scheduleselected.data.type" value="monthlyii">Mensuelle par jour</label>
+                                    </div>
+                                </div>
+                                <div class="col-sm-8">
+                                    <!--Only ONCE-->
+                                    <div class="row" ng-show="scheduleselected.data.type === 'once'">
+                                        <div class="col-sm-2 vcenter">
+                                            <h5>le</h5>
+                                        </div>
+                                        <div class="col-sm-4 vcenter">
+                                            <div ng-controller="datePickerController">
+                                                <p class="input-group">
+                                                    <input type="text" ng-model="scheduleselected.data.once.date" class="form-control" uib-datepicker-popup ng-model="dateOnce" is-open="openedDateOnce" datepicker-options="dateOptions" ng-required="true" close-text="Close" />
+                                                    <span class="input-group-btn">
+                                                        <button type="button" class="btn btn-default" ng-click="openedDateOnce=true"><i class="glyphicon glyphicon-calendar"></i></button>
+                                                    </span>
+                                                </p>
+                                            </div>
+                                        </div>
+                                        <div class="col-sm-1 vcenter">
+                                            <h5>à</h5>
+                                        </div>
+                                        <div class="col-sm-3 vcenter">
+                                            <div class="form-group">
+                                                <uib-timepicker ng-model="scheduleselected.data.once.time" ng-change="" hour-step="1" minute-step="1" show-meridian="true"></uib-timepicker>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <!--DAILY BASIS-->
+                                    <div class="row" ng-show="scheduleselected.data.type === 'daily'">
+                                        <div class="col-sm-2 ">
+                                            <h5>tous les </h5>
+                                        </div>
+                                        <div class="col-sm-2 ">
+                                            <div class="form-group">
+                                                <input type="number" ng-model="scheduleselected.data.daily.frequency" min="1" max="1000">
+                                            </div>
+                                        </div>
+                                        <div class="col-sm-2 ">
+                                            <h5>jours</h5>
+                                        </div>
+                                    </div>
+                                    <!--WEEKLY BASIS-->
+                                    <div class="row" ng-show="scheduleselected.data.type === 'weekly'">
+                                        <div class="col-sm-2 ">
+                                            <h5>tous les </h5>
+                                        </div>
+                                        <div class="form-group col-sm-2">
+                                            <input type="number" ng-model="scheduleselected.data.weekly.frequency" min="1" max="100">
+                                        </div>
+                                        <div class="col-sm-8 ">
+                                            <div class="btn-group">
+                                                <label class="btn btn-default" ng-model="scheduleselected.data.weekly.lundi" uib-btn-checkbox>lundi</label>
+                                                <label class="btn btn-default" ng-model="scheduleselected.data.weekly.mardi" uib-btn-checkbox>mardi</label>
+                                                <label class="btn btn-default" ng-model="scheduleselected.data.weekly.mercredi" uib-btn-checkbox>mercredi</label>
+                                                <label class="btn btn-default" ng-model="scheduleselected.data.weekly.jeudi" uib-btn-checkbox>jeudi</label>
+                                                <label class="btn btn-default" ng-model="scheduleselected.data.weekly.vendredi" uib-btn-checkbox>vendredi</label>
+                                                <label class="btn btn-default" ng-model="scheduleselected.data.weekly.samedi" uib-btn-checkbox>samedi</label>
+                                                <label class="btn btn-default" ng-model="scheduleselected.data.weekly.dimanche" uib-btn-checkbox>dimanche</label>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <!--MONTHLY BASIS-->
+                                    <div class="row" ng-show="scheduleselected.data.type === 'monthly'">
+                                        <div class="col-sm-2 ">
+                                            <h5>tous les </h5>
+                                        </div>
+                                        <div class="form-group col-sm-2">
+                                            <select class="form-control" ng-model="scheduleselected.data.monthly.frequency">
+                                                <option>premier</option>
+                                                <option>second</option>
+                                                <option>3-ème</option>
+                                                <option>4-ème</option>
+                                                <option>dernier</option>
+                                            </select>
+                                        </div>
+                                        <div class="col-sm-8 ">
+                                            <div class="btn-group">
+                                                <label class="btn btn-default" ng-model="scheduleselected.data.monthly.weekday" uib-btn-radio="'lundi'">lundi</label>
+                                                <label class="btn btn-default" ng-model="radioModel" uib-btn-radio="'mardi'">mardi</label>
+                                                <label class="btn btn-default" ng-model="radioModel" uib-btn-radio="'mercredi'">mercredi</label>
+                                                <label class="btn btn-default" ng-model="radioModel" uib-btn-radio="'jeudi'">jeudi</label>
+                                                <label class="btn btn-default" ng-model="radioModel" uib-btn-radio="'vendredi'">vendredi</label>
+                                                <label class="btn btn-default" ng-model="radioModel" uib-btn-radio="'samedi'">samedi</label>
+                                                <label class="btn btn-default" ng-model="radioModel" uib-btn-radio="'dimanche   '">dimanche</label>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <!--MONTHLY BASIS II-->
+                                    <div class="row" ng-show="scheduleselected.data.type === 'monthlyii'">
+                                        <div class="col-sm-2 ">
+                                            <h5>tous les </h5>
+                                        </div>
+                                        <div class="col-sm-2 ">
+                                            <div class="form-group">
+                                                <input type="number" ng-model="scheduleselected.data.monthlyii.frequency" min="1" max="31">
+                                            </div>
+                                        </div>
+                                        <div class="col-sm-2 ">
+                                            <h5>du mois</h5>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <!--=========================
+                            Type of repetition during day
+                            =========================-->
+                            <div class="row" ng-show="scheduleselected.data.type !== 'once'">
+                                <div class="col-sm-2" style="z-index: 1">
+                                    <h4>Durant la journée</h4>
+                                </div>
+                                <div class="col-sm-2" style="z-index: 1">
+                                    <div class="radio">
+                                        <label><input type="radio" ng-model="scheduleselected.data.typeForDay" value="onceForDay">Une seule fois</label>
+                                    </div>
+                                    <div class="radio">
+                                        <label><input type="radio" ng-model="scheduleselected.data.typeForDay" value="minutelyForDay">Toutes les x minutes</label>
+                                    </div>
+                                    <div class="radio">
+                                        <label><input type="radio" ng-model="scheduleselected.data.typeForDay" value="hourlyForDay">Toutes les x heures</label>
+                                    </div>
+                                </div>
+                                <div class="col-sm-8">
+                                    <div class="row" ng-show="scheduleselected.data.typeForDay==='onceForDay'">
+                                        <div class="col-sm-2 vcenter">
+                                            <h5>à</h5>
+                                        </div>
+                                        <div class="col-sm-3 vcenter">
+                                            <div class="form-group">
+                                                <uib-timepicker ng-model="scheduleselected.data.onceForDay.time" ng-change="" hour-step="1" minute-step="1" show-meridian="true"></uib-timepicker>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="row" ng-show="scheduleselected.data.typeForDay==='minutelyForDay'">
+                                        <div class="col-sm-2 ">
+                                            <h5>fréquence</h5>
+                                        </div>
+                                        <div class="col-sm-3 ">
+                                            <div class="form-group">
+                                                <input type="number" ng-model="scheduleselected.data.minutelyForDay.frequency" class="form-control" placeholder="entrer la fréquence x" min="1" max="1000">
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="row" ng-show="scheduleselected.data.typeForDay==='hourlyForDay'">
+                                        <div class="col-sm-2 ">
+                                            <h5>fréquence</h5>
+                                        </div>
+                                        <div class="col-sm-3 ">
+                                            <div class="form-group">
+                                                <input type="number" ng-model="scheduleselected.data.hourlyForDay.frequency" class="form-control" placeholder="entrer la fréquence x" min="1" max="12">
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="row" ng-show="scheduleselected.data.typeForDay==='minutelyForDay'  || scheduleselected.data.typeForDay==='hourlyForDay'">
+                                        <div class="col-sm-2 vcenter">
+                                            <h5>entre</h5>
+                                        </div>
+                                        <div class="col-sm-3 vcenter">
+                                            <uib-timepicker ng-model="scheduleselected.data.validityinday.start" ng-change="" hour-step="1" minute-step="1" show-meridian="true"></uib-timepicker>
+                                        </div>
+                                        <div class="col-sm-1 vcenter">
+                                            <h5>et</h5>
+                                        </div>
+                                        <div class="col-sm-3 vcenter">
+                                            <uib-timepicker ng-model="scheduleselected.data.validityinday.end" ng-change="" hour-step="1" minute-step="1" show-meridian="true"></uib-timepicker>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <!--=========================
+                            validity period
+                            =========================-->
+                            <div class="row" ng-show="scheduleselected.data.type !== 'once'">
+                                <div class="col-sm-2 vcenter" style="z-index: 1">
+                                    <h4>Validité</h4>
+                                </div>
+                                <div class="col-sm-2 vcenter" style="z-index: 1">
+                                    <div ng-controller="datePickerController">
+                                        <p class="input-group">
+                                            <input type="text" class="form-control" uib-datepicker-popup ng-model="scheduleselected.data.validity.dateStart" is-open="openedStart" datepicker-options="dateOptions" ng-required="true" close-text="Close" />
+                                            <span class="input-group-btn">
+                                                <button type="button" class="btn btn-default" ng-click="openedStart=true"><i class="glyphicon glyphicon-calendar"></i></button>
+                                            </span>
+                                        </p>
+                                    </div>
+                                </div>
+                                <div class="col-sm-2 vcenter">
+                                    <uib-timepicker ng-model="scheduleselected.data.validity.timeStart" ng-change="" hour-step="1" minute-step="1" show-meridian="true"></uib-timepicker>
+                                </div>
+                                <div class="col-sm-1 vcenter">à</div>
+                                <div class="col-sm-2 vcenter">
+                                    <div ng-controller="datePickerController">
+                                        <p class="input-group">
+                                            <input type="text" class="form-control" uib-datepicker-popup ng-model="scheduleselected.data.validity.dateEnd" is-open="openedEnd" datepicker-options="dateOptions" ng-required="true" close-text="Close" />
+                                            <span class="input-group-btn">
+                                                <button type="button" class="btn btn-default" ng-click="openedEnd=true"><i class="glyphicon glyphicon-calendar"></i></button>
+                                            </span>
+                                        </p>
+                                    </div>
+                                </div>
+                                <div class="col-sm-2 vcenter">
+                                    <uib-timepicker ng-model="scheduleselected.data.validity.timeEnd" ng-change="" hour-step="1" minute-step="1" show-meridian="true"></uib-timepicker>
+                                </div>
+                            </div>
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </uib-tab>
+        <uib-tab index="3" heading="Attribution" select="setTab(3)">
+            <div ng-include="'app/templates/attribution.html'"></div>
+        </uib-tab>
+        <uib-tab index="4" heading="Ecrans" select="setTab(4)">
+            <div ng-include="'app/templates/screen.html'"></div>
+        </uib-tab>
+        <uib-tab index="5" heading="Upload" select="setTab(5)">
+            <form action="/upload" method="POST" enctype="multipart/form-data">
+                Select an image to upload:
+                <input type="file" name="image">
+                <input type="submit" value="Upload Image">
+            </form>
+        </uib-tab>
+    </uib-tabset>
+
+
+
+
+
+</body>
+</html>

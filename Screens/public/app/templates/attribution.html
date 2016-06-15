@@ -1,0 +1,51 @@
+﻿<div class="panel" ng-controller="attributionsController">
+    <div class="panel-body" ng-show="attributionReady">
+        <div class="row">
+            <div ng-repeat="attribution in attributionsToDisplay">
+                <div class="col-sm-2">
+                    {{attribution.screen}}
+                </div>
+                <div class="col-sm-3">
+                    {{attribution.sequence}}
+                </div>
+                <div class="col-sm-5">
+                    {{attribution.schedule}}
+                </div>
+                <div class="col-sm-2">
+                    <button type="button" class="btn btn-danger" ng-click="deleteAttribution(attribution.id)">Supprimer</button>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <button type="button" class="btn btn-default" ng-click="isAddOptionCollapsed = !isAddOptionCollapsed">Pour ajouter une attribution</button>
+            <hr>
+            <div uib-collapse="isAddOptionCollapsed">
+                <div class="well well-lg">
+                    <div class="row">
+                        <div class="col-sm-4">
+                            <button type="button" class="btn btn-success" ng-click="addAttribution()" ng-disabled="! addAttributionPossible()">Ajouter</button>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-sm-2">
+                            <div class="list-group">
+                                <a ng-repeat="screen in screens" class="list-group-item" ng-click="screenSelected(screen)" ng-class="{active:isScreenTheActiveOne(screen)}">{{screen.data.name}}</a>
+                            </div>
+                        </div>
+                        <div class="col-sm-4">
+                            <div class="list-group">
+                                <a ng-repeat="seq in sequencesToDisplay" class="list-group-item" ng-click="sequenceSelected(seq)" ng-class="{active:isSequenceTheActiveOne(seq)}">{{seq.data.name}}</a>
+                            </div>
+                        </div>
+                        <div class="col-sm-6">
+                            <div class="list-group">
+                                <a ng-repeat="schedule in schedules" class="list-group-item" ng-click="scheduleSelected(schedule)" ng-class="{active:isScheduleTheActiveOne(schedule)}">{{schedule.data.name}}</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+

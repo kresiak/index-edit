@@ -1,0 +1,48 @@
+﻿<div class="panel" ng-controller="screensController">
+    <div class="panel-body" ng-show="allReady">
+        <div class="row">
+            <div class="col-sm-4">
+                <div class="row">
+                    <div style="margin: 50px 20px">
+                        <div class="list-group">
+                            <!--REPEAT-->
+                            <a ng-repeat="screen in screens" class="list-group-item" ng-click="screenSelected(screen)" ng-class="{active:isScreenTheActiveOne(screen)}">{{screen.data.name}}</a>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-sm-8 vcenter">
+                        <div ng-controller="datePickerController" style="margin: 50px 20px">
+                            <p class="input-group">
+                                <input type="text" class="form-control" uib-datepicker-popup ng-model="dateSondage" is-open="openedStart" datepicker-options="dateOptions" ng-required="true" close-text="Close"/>
+                                <span class="input-group-btn">
+                                    <button type="button" class="btn btn-default" ng-click="openedStart=true"><i class="glyphicon glyphicon-calendar"></i></button>
+                                </span>
+                            </p>
+                        </div>
+                    </div>
+                    <div class="col-sm-3 vcenter">
+                        <uib-timepicker ng-model="timeSondage" ng-change="" hour-step="1" minute-step="1" show-meridian="true"></uib-timepicker>
+                    </div>
+                </div>
+            </div>
+            <div class="col-sm-8">
+                <div class="row" style="margin: 50px 20px">
+                    <h4 ng-show="seqTitle">Séquence d'images affichée: {{seqTitle}}</h4> 
+                </div>
+                <div class="row">
+                    <div style="margin: 50px 20px">
+                        <uib-carousel interval="2000" active="activeSlide">
+                            <uib-slide ng-repeat="img in slides" index="$index">
+                                <img ng-src="{{img.url}}" style="margin: auto; width: 500px; height: 400px">
+                                <div class="carousel-caption">
+                                    <p>{{img.name}}</p>
+                                </div>
+                            </uib-slide>
+                        </uib-carousel>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

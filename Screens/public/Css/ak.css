@@ -1,0 +1,54 @@
+﻿img.galery{ 	
+			border:2px solid #DDD; 
+			max-width:128px; 
+			max-height:96px; 
+            margin: 0 0 20px 5px;
+            z-index: 2; 
+}
+img.galery:hover{
+            z-index: 2; 
+			border:2px solid #FFF; 
+			-webkit-transform:scale(2,3); 
+			-moz-transform:scale(2,3); 
+			-ms-transform:scale(2,3); 
+			-o-transform:scale(2,3); 
+            transform: scale(3,3);
+			margin-left:50px;
+}			
+
+
+.thumbnail{        
+    width: 120px; 
+    height: 160px;
+    overflow: auto;
+}
+
+.thumbnail.active{        
+    background-color: lightblue;
+}
+
+
+.thumbnail img{
+    max-height: 120px;
+}
+
+.vcenter {
+    display: inline-block;
+    vertical-align: middle;
+    float: none;
+}
+
+#logosGIGA img {
+    float: left;
+}
+
+#logosGIGA #ulgLogo {
+    padding: 10px 0 0 5px;
+    width: 120px;
+}
+
+.top-nav {
+    background: #FFF;
+    padding: 10px;
+    margin-bottom: 0;
+}
