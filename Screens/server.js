@@ -24,10 +24,6 @@ router.post('/upload', uploading.any(), function (req, res) {
 
 module.exports = router;
 
-app.use('/', router);
-app.use(express.static('public'));
-//app.use(uploading.any());
-app.listen(3002);
 
 
 var http = require('http');
@@ -162,7 +158,7 @@ function collectAllData(req, cb) {
     });
 }
 
-http.createServer(function (req, res) {
+var restServer= function (req, res) {
     var routeInfo = getRouteInfo(url.parse(req.url, true));
     res.setHeader("Access-Control-Allow-Origin", "*");
     
@@ -233,5 +229,12 @@ http.createServer(function (req, res) {
 	
 	//res.writeHead(200, { 'Content-Type': 'text/plain' });
 	//res.end('Hello World\n');
-}).listen(port);
+};
+
+app.use('/data', restServer);
+app.use('/', router);
+app.use(express.static('public'));
+//app.use(uploading.any()); 
+app.listen(3002);
+
 

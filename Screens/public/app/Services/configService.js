@@ -3,7 +3,7 @@ app.factory('configService', ['$location', function ($location) {
 
     var getServerPath = function () {
         //var urlprefix = $location.host() + ($location.port() ? ":" + $location.port() : "");
-        var urlprefix = 'http://localhost:1337/';
+        var urlprefix = 'http://localhost:3002/data/';
         return urlprefix;
     }
 
