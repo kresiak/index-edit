@@ -26,10 +26,8 @@ module.exports = router;
 
 
 
-var http = require('http');
 var fs = require('fs');
 var url = require('url');
-var port = process.env.port || 1337;
 
 
 var databaseFolder = __dirname + '\\database\\';
@@ -235,6 +233,13 @@ app.use('/data', restServer);
 app.use('/', router);
 app.use(express.static('public'));
 //app.use(uploading.any()); 
-app.listen(3002);
+//app.listen(3002);
+
+var server_port = process.env.OPENSHIFT_NODEJS_PORT || 3002;
+var server_ip_address = process.env.OPENSHIFT_NODEJS_IP || '127.0.0.1';
+
+app.listen(server_port, server_ip_address, function () {
+    console.log("Listening on " + server_ip_address + ", server_port " + server_port);
+});
 
 
