@@ -34,6 +34,55 @@ app.controller("screensController", function($scope, dataService, $q) {
     }
 
     initData();
+    
+    function isAttributionCandidate(attrid) {
+        var now = Date.now();
+        var todaysWeekDay = now.getDay;
+        var last = attributionsDict[attrid].lastDisplay;
+
+        var attribution = attributionsDict[attrid];
+        var schedule = schedulesDict[attribution.schedule];
+        
+        if (schedule.type !== 'once') {
+            var validityStart = attribution.validity.dateStart;
+            var validityEnd = attribution.validity.dateEnd;
+            var validityInDayStart = attribution.validityinday.start;
+            var validityInDayEnd = attribution.validityinday.end;
+
+            if (now < validityStart || now > validityEnd) return false;
+            if (now < Date.composeTimeAndNow(validityInDayStart) || now > Date.composeTimeAndNow(validityInDayEnd)) return false;
+        }
+
+        var isDayCandidate = false;
+
+        switch (schedule.type) {
+            case 'once':
+                if (last) return false;
+                var dateOnce =  Date.composeTimeAndDate(attribution.once.time, attribution.once.date) ;
+                return now > dateOnce;
+                break;
+            case 'daily':
+                isDayCandidate = !last || Date.daysBetween(now, last) >= attribution.daily.frequency;
+                break;
+            case 'weekly':
+                isDayCandidate = (todaysWeekDay === 0 && attribution.weekly.dimanche) ||
+                (todaysWeekDay === 1 && attribution.weekly.lundi) ||
+                (todaysWeekDay === 2 && attribution.weekly.mardi) ||
+                (todaysWeekDay === 3 && attribution.weekly.mercredi) ||
+                (todaysWeekDay === 4 && attribution.weekly.jeudi) ||
+                (todaysWeekDay === 5 && attribution.weekly.vendredi) ||
+                (todaysWeekDay === 6 && attribution.weekly.samedi);
+                break;
+            case 'monthly':
+                break;
+            case 'monthlyii':
+                break;            
+        default:
+        }
+
+        if (!isDayCandidate) return false;
+
+    }
 
 
     var screenSelected;

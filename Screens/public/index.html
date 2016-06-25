@@ -24,6 +24,7 @@
     <script src="app/appBootAngular.js"></script>
 
     <script src="app/Classes/dataClasses.js"></script>
+    <script src="app/Code/date.js"></script>
 
     <script src="app/Services/dataService.js"></script>
     <script src="app/Services/configService.js"></script>
@@ -331,13 +332,13 @@
                                     </div>
                                     <!--WEEKLY BASIS-->
                                     <div class="row" ng-show="scheduleselected.data.type === 'weekly'">
-                                        <div class="col-sm-2 ">
+                                        <!--<div class="col-sm-2 ">
                                             <h5>tous les </h5>
                                         </div>
                                         <div class="form-group col-sm-2">
                                             <input type="number" ng-model="scheduleselected.data.weekly.frequency" min="1" max="100">
-                                        </div>
-                                        <div class="col-sm-8 ">
+                                        </div>-->
+                                        <div class="col-sm-12 ">
                                             <div class="btn-group">
                                                 <label class="btn btn-default" ng-model="scheduleselected.data.weekly.lundi" uib-btn-checkbox>lundi</label>
                                                 <label class="btn btn-default" ng-model="scheduleselected.data.weekly.mardi" uib-btn-checkbox>mardi</label>

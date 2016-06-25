@@ -32,6 +32,7 @@
   <ItemGroup>
     <Compile Include="public\app\appBootAngular.js" />
     <Compile Include="public\app\Classes\dataClasses.js" />
+    <Compile Include="public\app\Code\date.js" />
     <Compile Include="public\app\Controllers\attributionsController.js" />
     <Compile Include="public\app\Controllers\datePickerController.js" />
     <Compile Include="public\app\Controllers\filesController.js" />
@@ -82,6 +83,7 @@
     <Folder Include="public\app\" />
     <Folder Include="public\app\Classes\" />
     <Folder Include="public\app\Controllers\" />
+    <Folder Include="public\app\Code\" />
     <Folder Include="public\app\Services\" />
     <Folder Include="public\app\templates\" />
     <Folder Include="public\Css\" />

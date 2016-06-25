@@ -194,11 +194,11 @@ var restServer= function (req, res) {
                     })
                     ;
                 } else {
-                    crudReadAllFunctionFactory(routeInfo.getFileName())(function (files) {
-                        res.end(JSON.stringify(Object.keys(files).map(function (id) {
+                    crudReadAllFunctionFactory(routeInfo.getFileName())(function (records) {
+                        res.end(JSON.stringify(Object.keys(records).map(function (id) {
                             return {
                                 id: id,
-                                data: files[id]
+                                data: records[id]
                             };
                         })));
                     });
