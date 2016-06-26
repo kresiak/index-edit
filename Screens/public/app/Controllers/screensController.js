@@ -50,7 +50,7 @@ app.controller("screensController", function($scope, dataService, $q) {
             var validityInDayEnd = attribution.validityinday.end;
 
             if (now < validityStart || now > validityEnd) return false;
-            if (now < Date.composeTimeAndNow(validityInDayStart) || now > Date.composeTimeAndNow(validityInDayEnd)) return false;
+            if (schedule.typeForDay !== 'onceForDay' && (now < Date.composeTimeAndNow(validityInDayStart) || now > Date.composeTimeAndNow(validityInDayEnd))) return false;
         }
 
         var isDayCandidate = false;
@@ -74,14 +74,35 @@ app.controller("screensController", function($scope, dataService, $q) {
                 (todaysWeekDay === 6 && attribution.weekly.samedi);
                 break;
             case 'monthly':
+                var map = { lundi: 1, mardi: 2, mercredi: 3, jeudi: 4, vendredi: 5, samedi: 6, dimanche: 0 };
+                var requestedDay = map[attribution.monthly.weekday];
+                var map2 = { premier: 1, second: 2, '3 -ème': 3, '4-ème': 4, dernier: 5 };
+                var dateToCheck = Date.nthDayInMonth(map2[attribution.monthly.frequency], requestedDay);
+                isDayCandidate = Date.daysBetween(now, dateToCheck) === 0;
                 break;
             case 'monthlyii':
+                var lastDayThisMonth = Date.lastDayOfMonthAtDate(now).getDate();
+                var requestedDateInMonth = lastDayThisMonth < attribution.monthlyii.frequency ? lastDayThisMonth : attribution.monthlyii.frequency;
+                isDayCandidate = Date.daysBetween(now, new Date(now.getFullYear(), now.getMonth(), requestedDateInMonth)) === 0;
                 break;            
         default:
         }
 
         if (!isDayCandidate) return false;
 
+        switch (schedule.typeForDay) {
+            case 'onceForDay':
+                return !last || Date.daysBetween(now, last) !== 0;
+                break;
+            case 'minutelyForDay':
+                return !last || Date.minutesBetween(now, last) >= attribution.minutelyForDay.frequency;
+                break;
+            case 'hourlyForDay':
+                return !last || Date.hoursBetween(now, last) >= attribution.hourlyForDay.frequency;
+                break;            
+            default:
+                return false;
+        }
     }
 
 
