@@ -22,7 +22,7 @@ Date.minutesBetween = function (d1, d2) {
 }
 
 Date.composeTimeAndDate= function (time, date) {
-    return new Date(date.getYear(),
+    return new Date(date.getFullYear(),
         date.getMonth(),
         date.getDate(),
         time.getHours(),
@@ -32,7 +32,7 @@ Date.composeTimeAndDate= function (time, date) {
 }
 
 Date.composeTimeAndNow= function (time) {
-    return composeTimeAndDate(time, Date.now());
+    return Date.composeTimeAndDate(new Date(time), new Date(Date.now()) );
 }
 
 

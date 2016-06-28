@@ -36,21 +36,24 @@ app.controller("screensController", function($scope, dataService, $q) {
     initData();
     
     function isAttributionCandidate(attrid) {
-        var now = Date.now();
-        var todaysWeekDay = now.getDay;
+        var now = new Date(Date.now());
+        var todaysWeekDay = now.getDay();
         var last = attributionsDict[attrid].lastDisplay;
 
         var attribution = attributionsDict[attrid];
         var schedule = schedulesDict[attribution.schedule];
         
         if (schedule.type !== 'once') {
-            var validityStart = attribution.validity.dateStart;
-            var validityEnd = attribution.validity.dateEnd;
-            var validityInDayStart = attribution.validityinday.start;
-            var validityInDayEnd = attribution.validityinday.end;
+            var validityStart = schedule.validity.dateStart;
+            var validityEnd = schedule.validity.dateEnd;
+            var validityInDayStart = schedule.validityinday.start;
+            var validityInDayEnd = schedule.validityinday.end;
 
-            if (now < validityStart || now > validityEnd) return false;
-            if (schedule.typeForDay !== 'onceForDay' && (now < Date.composeTimeAndNow(validityInDayStart) || now > Date.composeTimeAndNow(validityInDayEnd))) return false;
+            if ((validityStart && now < validityStart) || (validityEnd && now > validityEnd))
+                return false;
+            if (schedule.typeForDay !== 'onceForDay' && ((validityInDayStart && now < Date.composeTimeAndNow(validityInDayStart)) || 
+                    (validityInDayEnd && now > Date.composeTimeAndNow(validityInDayEnd))))
+                return false;
         }
 
         var isDayCandidate = false;
@@ -58,31 +61,31 @@ app.controller("screensController", function($scope, dataService, $q) {
         switch (schedule.type) {
             case 'once':
                 if (last) return false;
-                var dateOnce =  Date.composeTimeAndDate(attribution.once.time, attribution.once.date) ;
+                var dateOnce =  Date.composeTimeAndDate(new Date(schedule.once.time), new Date(schedule.once.date)) ;
                 return now > dateOnce;
                 break;
             case 'daily':
-                isDayCandidate = !last || Date.daysBetween(now, last) >= attribution.daily.frequency;
+                isDayCandidate = !last || Date.daysBetween(now, last) >= schedule.daily.frequency;
                 break;
             case 'weekly':
-                isDayCandidate = (todaysWeekDay === 0 && attribution.weekly.dimanche) ||
-                (todaysWeekDay === 1 && attribution.weekly.lundi) ||
-                (todaysWeekDay === 2 && attribution.weekly.mardi) ||
-                (todaysWeekDay === 3 && attribution.weekly.mercredi) ||
-                (todaysWeekDay === 4 && attribution.weekly.jeudi) ||
-                (todaysWeekDay === 5 && attribution.weekly.vendredi) ||
-                (todaysWeekDay === 6 && attribution.weekly.samedi);
+                isDayCandidate = (todaysWeekDay === 0 && schedule.weekly.dimanche) ||
+                (todaysWeekDay === 1 && schedule.weekly.lundi) ||
+                (todaysWeekDay === 2 && schedule.weekly.mardi) ||
+                (todaysWeekDay === 3 && schedule.weekly.mercredi) ||
+                (todaysWeekDay === 4 && schedule.weekly.jeudi) ||
+                (todaysWeekDay === 5 && schedule.weekly.vendredi) ||
+                (todaysWeekDay === 6 && schedule.weekly.samedi);
                 break;
             case 'monthly':
                 var map = { lundi: 1, mardi: 2, mercredi: 3, jeudi: 4, vendredi: 5, samedi: 6, dimanche: 0 };
-                var requestedDay = map[attribution.monthly.weekday];
+                var requestedDay = map[schedule.monthly.weekday];
                 var map2 = { premier: 1, second: 2, '3 -ème': 3, '4-ème': 4, dernier: 5 };
-                var dateToCheck = Date.nthDayInMonth(map2[attribution.monthly.frequency], requestedDay);
+                var dateToCheck = Date.nthDayInMonth(map2[schedule.monthly.frequency], requestedDay);
                 isDayCandidate = Date.daysBetween(now, dateToCheck) === 0;
                 break;
             case 'monthlyii':
                 var lastDayThisMonth = Date.lastDayOfMonthAtDate(now).getDate();
-                var requestedDateInMonth = lastDayThisMonth < attribution.monthlyii.frequency ? lastDayThisMonth : attribution.monthlyii.frequency;
+                var requestedDateInMonth = lastDayThisMonth < schedule.monthlyii.frequency ? lastDayThisMonth : schedule.monthlyii.frequency;
                 isDayCandidate = Date.daysBetween(now, new Date(now.getFullYear(), now.getMonth(), requestedDateInMonth)) === 0;
                 break;            
         default:
@@ -95,10 +98,10 @@ app.controller("screensController", function($scope, dataService, $q) {
                 return !last || Date.daysBetween(now, last) !== 0;
                 break;
             case 'minutelyForDay':
-                return !last || Date.minutesBetween(now, last) >= attribution.minutelyForDay.frequency;
+                return !last || Date.minutesBetween(now, last) >= schedule.minutelyForDay.frequency;
                 break;
             case 'hourlyForDay':
-                return !last || Date.hoursBetween(now, last) >= attribution.hourlyForDay.frequency;
+                return !last || Date.hoursBetween(now, last) >= schedule.hourlyForDay.frequency;
                 break;            
             default:
                 return false;
@@ -113,6 +116,10 @@ app.controller("screensController", function($scope, dataService, $q) {
             var attributionsToScreen = attributions.filter(function(attr) {
                 return attr.data.screen === screen.id;
             });
+            
+            attributionsToScreen.forEach(function(attr) {
+                    var isOk = isAttributionCandidate(attr.id);
+                });
 
             $scope.seqTitle = '<rien du tout>';
             if (attributionsToScreen.length > 0) {
