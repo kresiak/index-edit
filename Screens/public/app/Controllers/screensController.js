@@ -1,45 +1,45 @@
 ﻿'use strict';
 
-app.controller("screensController", function($scope, dataService, $q) {
+app.controller("screensController", function ($scope, dataService, $q) {
     var promises = [];
     $scope.slides = [];
-
+    
     var screensDict, sequencesDict, schedulesDict, attributions, attributionsDict, sequences, schedules;
-
+    
     function initData() {
         promises.push(dataService.crudGetRecords('screens').then(function (response) {
             $scope.screens = response.data;
             screensDict = dataService.transformIntoDictionary($scope.screens);
         }));
-
+        
         promises.push(dataService.crudGetRecords('sequences').then(function (response) {
             sequences = response.data;
             sequencesDict = dataService.transformIntoDictionary(sequences);
         }));
-
+        
         promises.push(dataService.crudGetRecords('schedules').then(function (response) {
             schedules = response.data;
             schedulesDict = dataService.transformIntoDictionary(schedules);
         }));
-
+        
         promises.push(dataService.crudGetRecords('attributions').then(function (response) {
             attributions = response.data;
             attributionsDict = dataService.transformIntoDictionary(attributions);
         }));
-
+        
         $q.all(promises)
             .then(function () {
-                $scope.allReady = true;
-            });
+            $scope.allReady = true;
+        });
     }
-
+    
     initData();
     
     function isAttributionCandidate(attrid) {
         var now = new Date(Date.now());
         var todaysWeekDay = now.getDay();
         var last = attributionsDict[attrid].lastDisplay;
-
+        
         var attribution = attributionsDict[attrid];
         var schedule = schedulesDict[attribution.schedule];
         
@@ -48,20 +48,20 @@ app.controller("screensController", function($scope, dataService, $q) {
             var validityEnd = schedule.validity.dateEnd;
             var validityInDayStart = schedule.validityinday.start;
             var validityInDayEnd = schedule.validityinday.end;
-
+            
             if ((validityStart && now < validityStart) || (validityEnd && now > validityEnd))
                 return false;
             if (schedule.typeForDay !== 'onceForDay' && ((validityInDayStart && now < Date.composeTimeAndNow(validityInDayStart)) || 
-                    (validityInDayEnd && now > Date.composeTimeAndNow(validityInDayEnd))))
+                (validityInDayEnd && now > Date.composeTimeAndNow(validityInDayEnd))))
                 return false;
         }
-
+        
         var isDayCandidate = false;
-
+        
         switch (schedule.type) {
             case 'once':
                 if (last) return false;
-                var dateOnce =  Date.composeTimeAndDate(new Date(schedule.once.time), new Date(schedule.once.date)) ;
+                var dateOnce = Date.composeTimeAndDate(new Date(schedule.once.time), new Date(schedule.once.date));
                 return now > dateOnce;
                 break;
             case 'daily':
@@ -87,12 +87,12 @@ app.controller("screensController", function($scope, dataService, $q) {
                 var lastDayThisMonth = Date.lastDayOfMonthAtDate(now).getDate();
                 var requestedDateInMonth = lastDayThisMonth < schedule.monthlyii.frequency ? lastDayThisMonth : schedule.monthlyii.frequency;
                 isDayCandidate = Date.daysBetween(now, new Date(now.getFullYear(), now.getMonth(), requestedDateInMonth)) === 0;
-                break;            
-        default:
+                break;
+            default:
         }
-
+        
         if (!isDayCandidate) return false;
-
+        
         switch (schedule.typeForDay) {
             case 'onceForDay':
                 return !last || Date.daysBetween(now, last) !== 0;
@@ -102,49 +102,63 @@ app.controller("screensController", function($scope, dataService, $q) {
                 break;
             case 'hourlyForDay':
                 return !last || Date.hoursBetween(now, last) >= schedule.hourlyForDay.frequency;
-                break;            
+                break;
             default:
                 return false;
         }
     }
-
-
-    var screenSelected;
-
+    
+    
+    var screenSelected, attributionSelected;
+    
     $scope.screenSelected = function (screen) {
-        function initSlides(screen) {
-            var attributionsToScreen = attributions.filter(function(attr) {
+        function initAttributions(screen) {
+            $scope.attributionsToScreen = attributions.filter(function (attr) {
                 return attr.data.screen === screen.id;
             });
             
-            attributionsToScreen.forEach(function(attr) {
-                    var isOk = isAttributionCandidate(attr.id);
-                });
+            $scope.attributionsToScreen.forEach(function (attr) {
+                var isOk = isAttributionCandidate(attr.id);
+            });
 
-            $scope.seqTitle = '<rien du tout>';
-            if (attributionsToScreen.length > 0) {
-                var seq = sequencesDict[attributionsToScreen[0].data.sequence];
-                $scope.seqTitle = seq.name;
-                var count = 0;
-                $scope.slides = seq.files.map(function (fileid) {
-                    count++;
-                    return {
-                        id: count,
-                        url: $scope.getFileUrl($scope.getFileInfoById(fileid).filename),
-                        name: $scope.getFileInfoById(fileid).filename
-                    };
-                });
-            } else {
-                $scope.slides = [];
-            }
         }
-
+        
         screenSelected = screen;
-        initSlides(screen);
+        initAttributions(screen);
     }
-
+    
+    $scope.attributionSelected = function (attribution) {
+        attributionSelected = attribution;
+        function initSlides(attribution) {
+            $scope.seqTitle = '<rien du tout>';
+            var seq = sequencesDict[attribution.data.sequence];
+            $scope.seqTitle = seq.name;
+            var count = 0;
+            $scope.slides = seq.files.map(function (fileid) {
+                count++;
+                return {
+                    id: count,
+                    url: $scope.getFileUrl($scope.getFileInfoById(fileid).filename),
+                    name: $scope.getFileInfoById(fileid).filename
+                };
+            });
+        }
+        
+        initSlides(attribution);
+    }
+    
+    $scope.getAttributionTitle = function (attribution) {
+        var seq = sequencesDict[attribution.data.sequence];
+        var program = schedulesDict[attribution.data.schedule];
+        return seq.name + ': ' + program.name;
+    }
+    
     $scope.isScreenTheActiveOne = function (screen) {
         return screenSelected === screen;
+    }
+    
+    $scope.isAttributionTheActiveOne = function (attribution) {
+        return attributionSelected === attribution;
     }
 
 });
