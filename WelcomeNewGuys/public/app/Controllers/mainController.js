@@ -1,7 +1,7 @@
 ﻿'use strict';
 
 app.controller("mainController",
-    function ($scope, dataService, configService) {
+    function ($scope, dataService, $state) {
     $scope.welcomeText = 'hello stranger';
     
     dataService.crudGetRecords('Employees').then(
@@ -9,4 +9,8 @@ app.controller("mainController",
             $scope.employees = response.data;
         }
     );
+
+    $scope.gotoNext = function() {
+        $state.go('askName');
+    }
 });

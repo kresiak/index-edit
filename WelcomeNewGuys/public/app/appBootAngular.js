@@ -1,5 +1,27 @@
 ﻿var app = angular.module('welcomeGuysApp', ['ui.router', 'LocalStorageModule', 'ui.bootstrap']);
 
+app.config([
+    '$stateProvider', '$urlRouterProvider', function ($stateProvider, $urlRouterProvider) {
+        
+        $urlRouterProvider.otherwise('/');
+        
+        $stateProvider
+            .state('michelGeorges',
+                {
+            url: '/',
+            templateUrl: 'App/Views/MichelGeorges.html'    
+        })
+            .state('askName',
+                {
+                    url: '/',
+                    templateUrl: 'App/Views/AskName.html'
+        });
+    }
+]);
+
+
+
+
 String.IsNullOrEmpty = function (value) {
     if (value) {
         if (typeof (value) == 'string') {
