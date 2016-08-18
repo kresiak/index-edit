@@ -1,0 +1,65 @@
+﻿<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" ng-app="welcomeGuysApp">
+<!--manifest="vocapp.appcache">-->
+<head>
+    <title>Vocabulary</title>
+
+    <link rel="stylesheet" href="Css/bootstrap.css" />
+
+    <link rel="stylesheet" href="Css/ak.css" />
+
+    <!--Angular stuff-->
+    <script src="Scripts/angular.js"></script>
+
+    <script src="Scripts/angular-ui-router.min.js"></script>
+    <script src="Scripts/angular-local-storage.min.js"></script>
+
+    <script src="Scripts/angular-animate.min.js"></script>
+    <script src="Scripts/angular-touch.min.js"></script>
+    <script src="Scripts/ui-bootstrap-tpls-1.2.4.min.js"></script>
+
+
+    <!--Main code App-->
+    <script src="app/appBootAngular.js"></script>
+
+
+    <script src="app/Services/dataService.js"></script>
+    <script src="app/Services/configService.js"></script>
+
+    <script src="app/Controllers/mainController.js"></script>
+
+
+
+</head>
+<body ng-controller="mainController">
+
+    <nav class="navbar navbar-default top-nav" role="navigation">
+        <div id="headerGiga" class="container">
+            <div class="row">
+                <div class="col-sm-4">
+                    <div id="logosGIGA">
+                        <a href="http://www.giga.ulg.ac.be/">
+                            <img src="images/GIGAlogo.png" />
+                        </a>
+                        <a target="_blank" href="http://www.ulg.ac.be">
+                            <img id="ulgLogo" src="images/ULglogo.gif" />
+                        </a>
+                    </div>
+                </div>
+                <div class="col-sm-8">
+                    <h1>Welcome to the Giga, stranger</h1>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+
+
+<div>{{welcomeText}}</div>
+
+<ul ng-repeat="employee in employees">
+    <li>{{employee.email}}</li> 
+</ul>
+
+</body>
+</html>

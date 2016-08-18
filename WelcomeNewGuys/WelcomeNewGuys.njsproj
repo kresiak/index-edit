@@ -30,9 +30,45 @@
     <DebugSymbols>true</DebugSymbols>
   </PropertyGroup>
   <ItemGroup>
+    <Compile Include="public\app\appBootAngular.js" />
+    <Compile Include="public\app\Controllers\mainController.js" />
+    <Compile Include="public\app\Services\configService.js" />
+    <Compile Include="public\app\Services\dataService.js" />
+    <Compile Include="public\Scripts\angular-animate.min.js" />
+    <Compile Include="public\Scripts\angular-local-storage.min.js" />
+    <Compile Include="public\Scripts\angular-route.js" />
+    <Compile Include="public\Scripts\angular-touch.min.js" />
+    <Compile Include="public\Scripts\angular-ui-router.min.js" />
+    <Compile Include="public\Scripts\angular.js" />
+    <Compile Include="public\Scripts\angular.min.js" />
+    <Compile Include="public\Scripts\bootstrap.js" />
+    <Compile Include="public\Scripts\jquery-2.1.4.js" />
+    <Compile Include="public\Scripts\jquery-2.1.4.min.js" />
+    <Compile Include="public\Scripts\jquery-ui.min.js" />
+    <Compile Include="public\Scripts\ui-bootstrap-tpls-1.2.4.min.js" />
+    <Compile Include="public\Scripts\underscore.js" />
     <Compile Include="server.js" />
     <Content Include="package.json" />
+    <Content Include="public\css\ak.css" />
+    <Content Include="public\css\bootstrap.css" />
+    <Content Include="public\css\bootstrap.css.map" />
+    <Content Include="public\images\GIGAlogo.png" />
+    <Content Include="public\images\ULglogo.gif" />
+    <Content Include="public\index.html" />
+    <Content Include="public\Scripts\angular-animate.min.js.map" />
+    <Content Include="public\Scripts\angular-touch.min.js.map" />
+    <Content Include="public\Scripts\angular.min.js.map" />
     <Content Include="README.md" />
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="public\" />
+    <Folder Include="public\app\" />
+    <Folder Include="public\app\Controllers\" />
+    <Folder Include="public\app\Services\" />
+    <Folder Include="public\css\" />
+    <Folder Include="public\fonts\" />
+    <Folder Include="public\images\" />
+    <Folder Include="public\Scripts\" />
   </ItemGroup>
   <!-- Do not delete the following Import Project.  While this appears to do nothing it is a marker for setting TypeScript properties before our import that depends on them. -->
   <Import Project="$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v$(VisualStudioVersion)\TypeScript\Microsoft.TypeScript.targets" Condition="False" />
