@@ -1,0 +1,14 @@
+{
+  "name": "welcome-new-guys",
+  "version": "0.0.0",
+  "description": "WelcomeNewGuys",
+  "main": "server.js",
+  "author": {
+    "name": "akvasz",
+    "email": ""
+  },
+  "dependencies": {
+    "body-parser": "^1.15.2",
+    "mongodb": "^2.2.6"
+  }
+}
