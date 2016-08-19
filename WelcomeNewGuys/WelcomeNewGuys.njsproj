@@ -32,8 +32,11 @@
   <ItemGroup>
     <Compile Include="public\app\appBootAngular.js" />
     <Compile Include="public\app\Controllers\mainController.js" />
+    <Compile Include="public\app\Controllers\pageAskNameController.js" />
+    <Compile Include="public\app\Controllers\pageDirectorController.js" />
     <Compile Include="public\app\Services\configService.js" />
     <Compile Include="public\app\Services\dataService.js" />
+    <Compile Include="public\app\Services\transitionService.js" />
     <Compile Include="public\Scripts\angular-animate.min.js" />
     <Compile Include="public\Scripts\angular-local-storage.min.js" />
     <Compile Include="public\Scripts\angular-route.js" />
@@ -49,8 +52,8 @@
     <Compile Include="public\Scripts\underscore.js" />
     <Compile Include="server.js" />
     <Content Include="package.json" />
-    <Content Include="public\app\Views\AskName.html" />
-    <Content Include="public\app\Views\MichelGeorges.html" />
+    <Content Include="public\app\Views\pageAskName.html" />
+    <Content Include="public\app\Views\pageDirector.html" />
     <Content Include="public\css\ak.css" />
     <Content Include="public\css\bootstrap.css" />
     <Content Include="public\css\bootstrap.css.map" />

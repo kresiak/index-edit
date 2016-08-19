@@ -6,15 +6,15 @@ app.config([
         $urlRouterProvider.otherwise('/');
         
         $stateProvider
-            .state('michelGeorges',
+            .state('director',
                 {
             url: '/',
-            templateUrl: 'App/Views/MichelGeorges.html'    
+            templateUrl: 'App/Views/pageDirector.html'    
         })
             .state('askName',
                 {
                     url: '/',
-                    templateUrl: 'App/Views/AskName.html'
+                    templateUrl: 'App/Views/pageAskName.html'
         });
     }
 ]);

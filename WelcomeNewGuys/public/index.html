@@ -25,8 +25,11 @@
 
     <script src="app/Services/dataService.js"></script>
     <script src="app/Services/configService.js"></script>
+    <script src="app/Services/transitionService.js"></script>
 
     <script src="app/Controllers/mainController.js"></script>
+    <script src="app/Controllers/pageDirectorController.js"></script>
+    <script src="app/Controllers/pageAskNameController.js"></script>
 
 
 
@@ -53,9 +56,21 @@
         </div>
     </nav>
 
-    <div class="container">
-        <div ui-view></div>
+<div class="container">
+
+    <div class="row" ui-view style="height:400px">
+
     </div>
+    <div class="row">
+        
+        <div class="col-sm-2" >
+            <button ng-click="gotoBack()" class="btn-danger">Go back</button>
+        </div>
+        <div class="col-sm-2">
+            <button ng-click="gotoNext()" class="btn-info">Continue</button>
+        </div>
+    </div>
+</div>
 
 
 
