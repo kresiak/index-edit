@@ -33,6 +33,7 @@
     <Compile Include="public\app\appBootAngular.js" />
     <Compile Include="public\app\Controllers\mainController.js" />
     <Compile Include="public\app\Controllers\pageAskNameController.js" />
+    <Compile Include="public\app\Controllers\pageConfirmNameController.js" />
     <Compile Include="public\app\Controllers\pageDirectorController.js" />
     <Compile Include="public\app\Services\configService.js" />
     <Compile Include="public\app\Services\dataService.js" />
@@ -53,6 +54,7 @@
     <Compile Include="server.js" />
     <Content Include="package.json" />
     <Content Include="public\app\Views\pageAskName.html" />
+    <Content Include="public\app\Views\pageConfirmName.html" />
     <Content Include="public\app\Views\pageDirector.html" />
     <Content Include="public\css\ak.css" />
     <Content Include="public\css\bootstrap.css" />

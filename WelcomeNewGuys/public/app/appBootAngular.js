@@ -11,6 +11,11 @@ app.config([
             url: '/',
             templateUrl: 'App/Views/pageDirector.html'    
         })
+            .state('confirmName',
+                {
+            url: '/',
+            templateUrl: 'App/Views/pageConfirmName.html'
+        })
             .state('askName',
                 {
                     url: '/',
@@ -33,6 +38,19 @@ String.IsNullOrEmpty = function (value) {
     }
     return true;
 }
+
+String.IsNullOrTrimEmpty = function (value) {
+    if (value) {
+        if (typeof (value) == 'string') {
+            if (value.Trim().length > 0)
+                return false;
+        }
+        if (value != null)
+            return false;
+    }
+    return true;
+}
+
 
 String.prototype.Trim = function () {
     return this.replace(/^\s+|\s+$/g, '');
