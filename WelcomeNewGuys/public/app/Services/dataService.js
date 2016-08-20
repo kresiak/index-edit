@@ -34,6 +34,10 @@ app.factory('dataService', ['configService', '$http', function (configService, $
             return $http.get(urlprefix + table);
         }
         
+        function crudGetRecordById(table, id) {
+            return $http.get(urlprefix + table + '/' + id);
+        }
+        
         function callWebService(service, parameter) {
             return $http.post(configService.getServerPathForService() + service, parameter);
         }
@@ -54,6 +58,7 @@ app.factory('dataService', ['configService', '$http', function (configService, $
         dataServicefactory.getFileList = getFileList;
         dataServicefactory.crudCreateRecord = crudCreateRecord;
         dataServicefactory.crudGetRecords = crudGetRecords;
+        dataServicefactory.crudGetRecordById = crudGetRecordById;
         dataServicefactory.crudUpdateRecord = crudUpdateRecord;
         dataServicefactory.transformIntoDictionary = transformIntoDictionary;
         dataServicefactory.crudDeleteRecord = crudDeleteRecord;

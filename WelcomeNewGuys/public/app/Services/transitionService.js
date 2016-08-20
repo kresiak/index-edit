@@ -18,20 +18,20 @@ app.factory('transitionService', ['$state', '$rootScope', function ($state, $roo
                 var newState = 'unknown';
                 
                 switch (currentSate) {
-                    case 'askName':
-                        newState = 'director';
+                    case 'welcome.askName':
+                        newState = 'welcome.director';
                         break;
-                    case 'confirmName':
-                        newState = 'askName';
+                    case 'welcome.confirmName':
+                        newState = 'welcome.askName';
                         break;
-                    case 'askEmail':
-                        newState = 'confirmName';
+                    case 'welcome.askEmail':
+                        newState = 'welcome.confirmName';
                         break;
-                    case 'choosePi':
-                        newState = 'askEmail';
+                    case 'welcome.choosePi':
+                        newState = 'welcome.askEmail';
                         break;
-                    case 'userRegistered':
-                        newState = 'choosePi';
+                    case 'welcome.userRegistered':
+                        newState = 'welcome.choosePi';
                         break;
                     default:
                         return;
@@ -49,20 +49,20 @@ app.factory('transitionService', ['$state', '$rootScope', function ($state, $roo
                 var newState = 'unknown';
                 
                 switch (currentSate) {
-                    case 'director':
-                        newState = 'askName';
+                    case 'welcome.director':
+                        newState = 'welcome.askName';
                         break;
-                    case 'askName':
-                        newState = 'confirmName';
+                    case 'welcome.askName':
+                        newState = 'welcome.confirmName';
                         break;
-                    case 'confirmName':
-                        newState = 'askEmail';
+                    case 'welcome.confirmName':
+                        newState = 'welcome.askEmail';
                         break;                       
-                    case 'askEmail':
-                        newState = 'choosePi';
+                    case 'welcome.askEmail':
+                        newState = 'welcome.choosePi';
                         break;
-                    case 'choosePi':
-                        newState = 'userRegistered';
+                    case 'welcome.choosePi':
+                        newState = 'welcome.userRegistered';
                         break;
                     default:
                         return;

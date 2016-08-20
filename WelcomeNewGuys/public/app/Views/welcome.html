@@ -1,0 +1,14 @@
+﻿<div ng-controller="welcomeController">
+    <div class="row" ui-view style="height:400px">
+
+    </div>
+    <div class="row">
+
+        <div class="col-sm-2">
+            <button ng-click="gotoBack()" ng-hide="hideGoBack" class="btn btn-danger">Go back</button>
+        </div>
+        <div class="col-sm-2">
+            <button ng-click="gotoNext()" ng-hide="hideGoContinue" class="btn btn-info">Continue</button>
+        </div>
+    </div>    
+</div>

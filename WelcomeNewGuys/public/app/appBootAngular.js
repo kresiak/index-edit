@@ -6,40 +6,60 @@ app.config([
         $urlRouterProvider.otherwise('/');
         
         $stateProvider
-            .state('director',
+            .state('presentation',
+                {
+            url: '/presentation/:presentationId',
+            templateUrl: 'App/Views/presentation.html'
+        })
+            .state('examen',
+                {
+            url: '/examen',
+            templateUrl: 'App/Views/examen.html'
+        })
+            .state('score',
+                {
+            url: '/score',
+            templateUrl: 'App/Views/score.html'
+        })
+            .state('welcome',
+                {
+            url: '/welcome',
+            templateUrl: 'App/Views/welcome.html'
+        })
+            .state('welcome.director',
                 {
             url: '/',
-            templateUrl: 'App/Views/pageDirector.html'    
+            templateUrl: 'App/Views/Welcome/pageDirector.html'    
         })
-            .state('IntroGiga',
-                {
-            url: '/IntroGiga',
-            templateUrl: 'App/Views/Presentations/introGiga.html'
-        })
-            .state('userRegistered',
-                {
-            url: '/',
-            templateUrl: 'App/Views/pageUserRegistered.html'
-        })
-            .state('choosePi',
+        //    .state('IntroGiga',
+        //        {
+        //    url: '/IntroGiga',
+        //    templateUrl: 'App/Views/Presentations/introGiga.html'
+        //})
+            .state('welcome.userRegistered',
                 {
             url: '/',
-            templateUrl: 'App/Views/pageChoosePi.html'
+            templateUrl: 'App/Views/Welcome/pageUserRegistered.html'
         })
-            .state('askEmail',
+            .state('welcome.choosePi',
                 {
             url: '/',
-            templateUrl: 'App/Views/pageAskEmail.html'
+            templateUrl: 'App/Views/Welcome/pageChoosePi.html'
         })
-            .state('confirmName',
+            .state('welcome.askEmail',
                 {
             url: '/',
-            templateUrl: 'App/Views/pageConfirmName.html'
+            templateUrl: 'App/Views/Welcome/pageAskEmail.html'
         })
-            .state('askName',
+            .state('welcome.confirmName',
+                {
+            url: '/',
+            templateUrl: 'App/Views/Welcome/pageConfirmName.html'
+        })
+            .state('welcome.askName',
                 {
                     url: '/',
-                    templateUrl: 'App/Views/pageAskName.html'
+                    templateUrl: 'App/Views/Welcome/pageAskName.html'
         });
     }
 ]);

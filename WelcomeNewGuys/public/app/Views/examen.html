@@ -1,0 +1,20 @@
+﻿<div ng-controller="examenController">
+    <div class="panel-heading">
+        <h2>{{presentation.title}}: pass the exam</h2>
+    </div>
+
+    <div class="panel-body">
+        <div ng-repeat="question in presentation.exam" ng-init="questionIndex = 'q' + $index">
+            <h3>{{$index + 1}} {{question.question}}</h3>
+            <div class="radio" ng-repeat="proposition in question.responses">
+                <label><input type="radio" ng-model="question.givebyUser" value="{{$index}}">{{proposition}}</label>
+            </div>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-sm-4">
+            <button ng-click="gotoScore()" class="btn btn-danger">I have finished</button>
+        </div>
+    </div>
+</div>

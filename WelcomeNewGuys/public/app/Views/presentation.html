@@ -1,0 +1,15 @@
+﻿<div ng-controller="presentationController">
+    <div class="panel-heading">
+        <h2>{{presentation.title}}</h2>
+    </div>
+
+    <div class="panel-body" ng-if="isLoaded">
+        <div ng-include="'app/Views/Presentations/' + presentation.url + '.html'"></div>
+    </div>
+
+    <div class="row">
+        <div class="col-sm-12">
+            <button ng-click="gotoExam()" class="btn btn-danger">I have read it, continue</button>
+        </div>
+    </div>
+</div>

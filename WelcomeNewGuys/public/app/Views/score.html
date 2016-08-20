@@ -1,0 +1,36 @@
+﻿<div ng-controller="examenController">
+    <div class="panel-heading">
+        <h2>{{presentation.title}}: result of the exam</h2>
+    </div>
+
+    <div class="panel-body">
+        <div class="row">
+            <div ng-show="presentation.passedExam">
+                <div class="col-sm-3 col-sm-push-1 vcenter">
+                    <img src="../../images/smile.jpg" />
+                </div>
+                <div class="col-sm-7 vcenter">
+                    <h4>You passed the exam. Congratulations!</h4>
+                </div>
+            </div>
+            <div ng-hide="presentation.passedExam">
+                <div class="col-sm-3 col-sm-push-1 vcenter">
+                    <img src="../../images/sad.png" />
+                </div>
+                <div class="col-sm-7 vcenter">
+                    <h4>So sorry! You haven't passed the exam. Watch the presentation another time and try again.</h4>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-sm-8 col-sm-push-1 vcenter">
+                <h4>Your score is {{presentation.score}}</h4>
+            </div>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-sm-4">
+        </div>
+    </div>
+</div>
