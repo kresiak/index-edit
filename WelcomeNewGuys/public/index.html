@@ -31,6 +31,9 @@
     <script src="app/Controllers/pageDirectorController.js"></script>
     <script src="app/Controllers/pageAskNameController.js"></script>
     <script src="app/Controllers/pageConfirmNameController.js"></script>
+    <script src="app/Controllers/pageAskEmailController.js"></script>
+    <script src="app/Controllers/pageChoosePiController.js"></script>
+    <script src="app/Controllers/pageUserRegisteredController.js"></script>
 
 
 
@@ -65,10 +68,10 @@
     <div class="row">
         
         <div class="col-sm-2" >
-            <button ng-click="gotoBack()" class="btn btn-danger">Go back</button>
+            <button ng-click="gotoBack()" ng-hide="hideGoBack" class="btn btn-danger">Go back</button>
         </div>
         <div class="col-sm-2">
-            <button ng-click="gotoNext()" class="btn btn-info">Continue</button>
+            <button ng-click="gotoNext()" ng-hide="hideGoContinue" class="btn btn-info">Continue</button>
         </div>
     </div>
 </div>

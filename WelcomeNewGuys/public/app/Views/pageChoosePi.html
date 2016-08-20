@@ -1,0 +1,26 @@
+﻿<div ng-controller="pageChoosePiController">
+
+    <div class="panel-heading">
+
+    </div>
+
+    <div class="panel-body">
+        <div class="row">
+            <div class="col-sm-4">
+                <p>Thank you for identifying your supervisor or PI in the following pull down menu</p>
+                <p></p>
+            </div>
+            <div class="col-sm-8">
+                <div class="row">
+                    <div class="col-sm-12">
+                        <select ng-model="ChosenPiId" size="5">
+                            <option ng-repeat="pi in pis" value="{{pi._id}}">{{pi.Prenom + ' ' + pi.Nom }}</option>
+                        </select>                        
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </div>
+
+</div>

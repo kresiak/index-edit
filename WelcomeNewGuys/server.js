@@ -21,7 +21,9 @@ mongodb.MongoClient.connect(connectionUrl, function (err, database) {
     // Save database object from the callback for reuse.
     db = database;
     console.log("Database connection ready");
-                
+
+    //tmpInitData2();
+    
     // Initialize the app.
     var server = app.listen(process.env.PORT || 8080, function () {
         var port = server.address().port;
@@ -67,6 +69,30 @@ app.post("/data/:type", function (req, res) {
         }
     });
 });
+
+app.post("/service/:type", function (req, res) {
+    var parameter = req.body;
+    
+    switch (req.params.type) {
+        case 'FindMatchingUsers':
+            var firstname = parameter.firstname;
+            var lastname = parameter.lastname;
+
+            var cursor = db.collection('Employees').find({ "Prenom": firstname, "Nom": lastname });
+            
+            cursor.toArray(function (err, docs) {
+                if (err) {
+                    handleError(res, err.message, 'Failed to get service ' + req.params.type + '.');
+                } else {
+                    res.status(201).json(docs);
+                }
+            });
+
+            break;
+        default:
+    }    
+});
+
 
 app.put("/data/:type/:id", function (req, res) {
     var updateDoc = req.body;
@@ -116,7 +142,39 @@ function tmpInitData() {
         }
         
         db.close();
-    });    
+    });
 }
 
+function tmpInitData2() {
+    var collection = db.collection("PIs");
+    
+    var employees = [{
+            'Nom': 'Georges', 
+            'Prenom': 'Michel',
+            'email': 'kasssalex@gmail.com'
+        }, {
+            'Nom': 'Copieters', 
+            'Prenom': 'Wouter',
+            'email': 'kasssalex@gmail.com'
+        }, {
+            'Nom': 'Delcourt', 
+            'Prenom': 'Paulette',
+            'email': 'kasssalex@gmail.com'
+        }, {
+            'Nom': 'Magnée', 
+            'Prenom': 'Christobald',
+            'email': 'kasssalex@gmail.com'
+        }
+    ];
+    
+    collection.insert(employees, function (error, result) {
+        if (!error) {
+            console.log("Success :" + result.ops.length + " pis2 inserted!");
+        } else {
+            console.log("Some error was encountered!");
+        }
+        
+        db.close();
+    });
+}
 

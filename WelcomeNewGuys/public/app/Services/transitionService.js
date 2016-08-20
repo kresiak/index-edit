@@ -24,6 +24,15 @@ app.factory('transitionService', ['$state', '$rootScope', function ($state, $roo
                     case 'confirmName':
                         newState = 'askName';
                         break;
+                    case 'askEmail':
+                        newState = 'confirmName';
+                        break;
+                    case 'choosePi':
+                        newState = 'askEmail';
+                        break;
+                    case 'userRegistered':
+                        newState = 'choosePi';
+                        break;
                     default:
                         return;
                 }
@@ -45,6 +54,15 @@ app.factory('transitionService', ['$state', '$rootScope', function ($state, $roo
                         break;
                     case 'askName':
                         newState = 'confirmName';
+                        break;
+                    case 'confirmName':
+                        newState = 'askEmail';
+                        break;                       
+                    case 'askEmail':
+                        newState = 'choosePi';
+                        break;
+                    case 'choosePi':
+                        newState = 'userRegistered';
                         break;
                     default:
                         return;

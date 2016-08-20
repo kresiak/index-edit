@@ -14,11 +14,9 @@
                         </div>
                     </div>
                     <div class="col-sm-8">
-                        <ul>
-                            <li>User 1</li>
-                            <li>User 2</li>
-                            <li>User 3</li>
-                        </ul>
+                        <select ng-model="specifiedUserId" size="5">
+                            <option ng-repeat="candidate in possibleUsers" value="{{candidate._id}}">{{getDisplayUserName(candidate)}}</option>
+                        </select>
                     </div>
                 </div>
                 <div class="row">
