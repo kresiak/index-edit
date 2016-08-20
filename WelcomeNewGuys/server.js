@@ -21,8 +21,8 @@ mongodb.MongoClient.connect(connectionUrl, function (err, database) {
     // Save database object from the callback for reuse.
     db = database;
     console.log("Database connection ready");
-
-    //tmpInitData2();
+    
+    //tmpInitData3();
     
     // Initialize the app.
     var server = app.listen(process.env.PORT || 8080, function () {
@@ -77,7 +77,7 @@ app.post("/service/:type", function (req, res) {
         case 'FindMatchingUsers':
             var firstname = parameter.firstname;
             var lastname = parameter.lastname;
-
+            
             var cursor = db.collection('Employees').find({ "Prenom": firstname, "Nom": lastname });
             
             cursor.toArray(function (err, docs) {
@@ -87,10 +87,10 @@ app.post("/service/:type", function (req, res) {
                     res.status(201).json(docs);
                 }
             });
-
+            
             break;
         default:
-    }    
+    }
 });
 
 
@@ -178,3 +178,66 @@ function tmpInitData2() {
     });
 }
 
+
+
+function tmpInitData3() {
+    var collection = db.collection("Presentations");
+    
+    var presentations = [{
+            'title': 'Introduction to the GIGA Institute', 
+            'url': 'IntroGiga',
+            'exam': [
+                {
+                    'question' : 'GIGA stands for...',
+                    'responses': ['Grappe Interdisciplinaire de Génoprotéomique Appliquée', 'Grande inquiétude générale acquise', 'Génétique indépendante générale associée'],
+                    'correct': 0
+                },
+                {
+                    'question' : 'The present director of Giga is...',
+                    'responses': ['Sandrina Evrard', 'Alexander Kvasz', 'Michel Georges'],
+                    'correct': 2
+                },            
+                {
+                    'question' : 'What is a PI?',
+                    'responses': ['Principal Informator', 'Principal Investigator', '3.14'],
+                    'correct': 1
+                }
+            ],
+            'examMinimalScore' : 2
+        }, 
+        {
+            'title': 'Legal obligations when working at the GIGA Institute', 
+            'url': 'LegalGiga',
+            'exam': [
+                {
+                    'question' : 'I am allowed to',
+                    'responses': ['Steal computers', 'Talk to people', 'Paint the walls'],
+                    'correct': 1
+                },
+                {
+                    'question' : 'What is a PI?',
+                    'responses': ['Principal Informator', 'Principal Investigator', '3.14'],
+                    'correct': 1
+                }
+            ],
+            'examMinimalScore' : 2
+        },         
+        {
+            'title': 'Working at the GIGA Institute – everyday life', 
+            'url': 'EveryDayGiga',
+            'exam': [
+            ],
+            'examMinimalScore' : 0
+        }         
+    ];
+    
+    collection.insert(presentations, function (error, result) {
+        if (!error) {
+            console.log("Success :" + result.ops.length + " pis2 inserted!");
+        } else {
+            console.log("Some error was encountered!");
+        }
+        
+        db.close();
+    });
+}

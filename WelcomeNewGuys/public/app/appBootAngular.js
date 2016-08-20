@@ -11,6 +11,11 @@ app.config([
             url: '/',
             templateUrl: 'App/Views/pageDirector.html'    
         })
+            .state('IntroGiga',
+                {
+            url: '/IntroGiga',
+            templateUrl: 'App/Views/Presentations/introGiga.html'
+        })
             .state('userRegistered',
                 {
             url: '/',

@@ -22,6 +22,13 @@ app.controller("pageUserRegisteredController", function ($scope, dataService, tr
             })
             ;        
     }
+    
+    dataService.crudGetRecords('Presentations').then(
+        function (response) {
+            $scope.presentations = response.data;
+        }
+    );
+
       
     transitionService.setOnNavigateCallback(function (isContinue) {
         if (isContinue) {

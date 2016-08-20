@@ -62,6 +62,7 @@
     <Content Include="public\app\Views\pageConfirmName.html" />
     <Content Include="public\app\Views\pageDirector.html" />
     <Content Include="public\app\Views\pageUserRegistered.html" />
+    <Content Include="public\app\Views\Presentations\introGiga.html" />
     <Content Include="public\css\ak.css" />
     <Content Include="public\css\bootstrap.css" />
     <Content Include="public\css\bootstrap.css.map" />
@@ -80,6 +81,7 @@
     <Folder Include="public\app\Controllers\" />
     <Folder Include="public\app\Views\" />
     <Folder Include="public\app\Services\" />
+    <Folder Include="public\app\Views\Presentations\" />
     <Folder Include="public\css\" />
     <Folder Include="public\fonts\" />
     <Folder Include="public\images\" />
