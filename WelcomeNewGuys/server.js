@@ -89,6 +89,33 @@ app.post("/service/:type", function (req, res) {
             });
             
             break;
+        case 'UpdateExamScore':
+            var userId = parameter.userId;
+            var presentationId = parameter.presentationId;
+            var score = parameter.score;
+            var passed = parameter.passed;
+
+            db.collection('Employees').findOne({ _id: new ObjectID(userId) }, function (err, doc) {
+                if (err) {
+                    handleError(res, err.message, "Failed to get Employee" );
+                } else {
+                    if (doc) {
+                        if (!doc.passedExams) {
+                            doc.passedExams = {};                            
+                        }
+                        doc.passedExams[presentationId] = { 'score': score, 'passed': passed, 'date': new Date() };
+                        
+                        db.collection('Employees').updateOne({ _id: new ObjectID(userId) }, doc, function (err, doc) {
+                            if (err) {
+                                handleError(res, err.message, "Failed to update " + req.params.type);
+                            } else {
+                                res.status(204).end();
+                            }
+                        });
+                    }
+                }
+            });
+            break;
         default:
     }
 });
@@ -228,7 +255,7 @@ function tmpInitData3() {
             'exam': [
             ],
             'examMinimalScore' : 0
-        }         
+        }
     ];
     
     collection.insert(presentations, function (error, result) {

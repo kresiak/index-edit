@@ -8,7 +8,7 @@ app.config([
         $stateProvider
             .state('presentation',
                 {
-            url: '/presentation/:presentationId',
+            url: '/presentation/:presentationId/:UserId',
             templateUrl: 'App/Views/presentation.html'
         })
             .state('examen',

@@ -4,6 +4,8 @@ app.controller("presentationController",
     function ($scope, $stateParams, dataService, $rootScope, $state) {
     
     var id = $stateParams.presentationId;
+    $rootScope.UserId = $stateParams.UserId;
+    
     $scope.isLoaded = false;
     
     dataService.crudGetRecordById('Presentations', id).then(

@@ -9,6 +9,9 @@ app.controller("examenController",
         var nbExiges = presentation.examMinimalScore;
         $rootScope.presentation.passedExam = nbCorrects >= nbExiges;
         $rootScope.presentation.score = nbCorrects + ' / ' + presentation.exam.length;
+
+        dataService.callWebService('UpdateExamScore', {'userId': $rootScope.UserId, 'presentationId': $rootScope.presentation._id, 'score': $rootScope.presentation.score, 'passed': $rootScope.presentation.passedExam});
+
         $state.go('score');
     }
     
