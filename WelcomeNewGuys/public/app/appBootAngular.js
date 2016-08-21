@@ -6,6 +6,16 @@ app.config([
         $urlRouterProvider.otherwise('/');
         
         $stateProvider
+            .state('identification',
+                {
+            url: '/identification',
+            templateUrl: 'App/Views/MyGiga/identification.html'
+        })
+            .state('userinfo',
+                {
+            url: '/userinfo',
+            templateUrl: 'App/Views/MyGiga/userinfo.html'
+        })
             .state('presentation',
                 {
             url: '/presentation/:presentationId/:UserId',

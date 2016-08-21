@@ -1,0 +1,58 @@
+﻿<div ng-controller="userinfoController">
+    <div ng-if="isLoaded">
+        <div class="panel-heading">
+            <h2>Here is your info, {{FullName}} </h2>
+        </div>
+
+        <div class="panel-body">
+            <div class="row">
+                <div class="col-sm-3">
+                    <h4>your name:</h4>
+                </div>
+                <div class="col-sm-9">
+                    <h4>{{FullName}}</h4>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-sm-3">
+                    <h4>e-mail address:</h4>
+                </div>
+                <div class="col-sm-9">
+                    <h4>{{user.email}}</h4>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-sm-3">
+                    <h4>alternate e-mail address:</h4>
+                </div>
+                <div class="col-sm-9">
+                    <h4>{{user.email2}}</h4>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-sm-3">
+                    <h4>your Pi:</h4>
+                </div>
+                <div class="col-sm-9">
+                    <h4>{{pi.Prenom + ' ' + pi.Nom}}</h4>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-sm-3">
+                    <h4>your exams:</h4>
+                </div>
+                <div class="col-sm-9">
+                    <ul>
+                        <li ng-repeat="presentation in presentations"><a ui-sref="presentation({presentationId:'{{presentation._id}}', UserId: '{{user._id}}'})">{{getPresentationText(presentation)}}</a></li>
+                    </ul>                    
+                </div>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-sm-12">
+                <button ng-click="gotoLogin()" class="btn btn-danger">Login</button>
+            </div>
+        </div>
+    </div>
+</div>
