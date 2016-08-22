@@ -22,7 +22,7 @@ mongodb.MongoClient.connect(connectionUrl, function (err, database) {
     db = database;
     console.log("Database connection ready");
     
-    //tmpInitData3();
+    //tmpInitData5();
     
     // Initialize the app.
     var server = app.listen(process.env.PORT || 8080, function () {
@@ -268,3 +268,147 @@ function tmpInitData3() {
         db.close();
     });
 }
+
+function tmpInitData4() {
+    var collection = db.collection("Platforms");
+    
+    var employees = [
+        {
+            'Nom': 'Imaging & Cell Cytometry', 
+            'Locations': [
+                {
+                    'Batiment': 'B34',
+                    'Etage': '+4'                
+                },
+                {
+                    'Batiment': 'B36',
+                    'Etage': '+1'
+                }
+            ]
+        }, 
+        {
+            'Nom': 'Viral Vector', 
+            'Locations': [
+                {
+                    'Batiment': 'B34',
+                    'Etage': '+4'
+                },
+                {
+                    'Batiment': 'B34',
+                    'Etage': '+1'
+                }
+            ]
+        }, 
+        {
+            'Nom': 'Zebrafish', 
+            'Locations': [
+                {
+                    'Batiment': 'B34',
+                    'Etage': '+1'
+                },
+                {
+                    'Batiment': 'B34',
+                    'Etage': '-2'
+                }
+            ]
+        }, 
+        {
+            'Nom': 'Genomics', 
+            'Locations': [
+                {
+                    'Batiment': 'B34',
+                    'Etage': '+1'
+                }
+            ]
+        }, 
+        {
+            'Nom': 'Mice Facilities & Transgenics SPF', 
+            'Locations': [
+                {
+                    'Batiment': 'B34',
+                    'Etage': '+1'
+                },
+                {
+                    'Batiment': 'B34',
+                    'Etage': '-2'
+                }
+            ]
+        }, 
+        {
+            'Nom': 'Animal Facilities (conventional)', 
+            'Locations': [
+                {
+                    'Batiment': 'B23'
+                }
+            ]
+        }, 
+        {
+            'Nom': 'Immunohistochemistry', 
+            'Locations': [
+                {
+                    'Batiment': 'B23'
+                }
+            ]
+        }, 
+        {
+            'Nom': 'Proteomics', 
+            'Locations': [
+                {
+                    'Batiment': 'B6'
+                }
+            ]
+        } 
+    ];
+    
+    collection.insert(employees, function (error, result) {
+        if (!error) {
+            console.log("Success :" + result.ops.length + " platforms inserted!");
+        } else {
+            console.log("Some error was encountered!");
+        }
+        
+        db.close();
+    });
+}
+
+function tmpInitData5() {
+    var collection = db.collection("Facilities");
+    
+    var employees = [
+        {
+            'Nom': 'Centrifugeuses'
+        }, 
+        {
+            'Nom': 'Culture cellules eucaryotes'
+        }, 
+        {
+            'Nom': 'Labo Techniques'
+        }, 
+        {
+            'Nom': 'Labo biochimie'
+        }, 
+        {
+            'Nom': 'RNA (Hotte)'
+        }, 
+        {
+            'Nom': 'qPCR'
+        }, 
+        {
+            'Nom': 'Electrophorèse et caméras'
+        }, 
+        {
+            'Nom': 'Labo -80C'
+        }
+    ];
+    
+    collection.insert(employees, function (error, result) {
+        if (!error) {
+            console.log("Success :" + result.ops.length + " platforms inserted!");
+        } else {
+            console.log("Some error was encountered!");
+        }
+        
+        db.close();
+    });
+}
+

@@ -107,6 +107,36 @@
 
                 </div>
             </div>
+            <div class="row rowdistant">
+                <div class="col-sm-6 vcenter">
+                    <h5>Which GIGA platform will {{userFullname}} need to use?</h5>
+                </div>
+                <div class="col-sm-5 vcenter">
+                    <div class="row">
+                        <div class="col-sm-12">
+                            <div class="btn-group-vertical">
+                                <label ng-repeat="platform in platforms" class="btn btn-default" ng-model="user.allowedPlatforms[platform._id]" uib-btn-checkbox>{{platform.Nom}}</label>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+            <div class="row rowdistant">
+                <div class="col-sm-6 vcenter">
+                    <h5>To which GIGA facilities will {{userFullname}} need access?</h5>
+                </div>
+                <div class="col-sm-5 vcenter">
+                    <div class="row">
+                        <div class="col-sm-12">
+                            <div class="btn-group-vertical">
+                                <label ng-repeat="facility in facilities" class="btn btn-default" ng-model="user.allowedPlatforms[facility._id]" uib-btn-checkbox>{{facility.Nom}}</label>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
         </div>
     </div>
 

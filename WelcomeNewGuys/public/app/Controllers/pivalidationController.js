@@ -18,10 +18,24 @@ app.controller("pivalidationController",
     promises.push(dataService.crudGetRecordById('Employees', $stateParams.UserId).then(
         function (response) {
             $scope.user = response.data;
+            $scope.user.allowedPlatforms = {};
             $scope.userFullname = $scope.user.Prenom + ' ' + $scope.user.Nom;
         }
     ));
         
+    promises.push(dataService.crudGetRecords('Platforms').then(
+        function (response) {
+            $scope.platforms = response.data;
+        }
+    ));
+    
+    promises.push(dataService.crudGetRecords('Facilities').then(
+        function (response) {
+            $scope.facilities = response.data;
+        }
+    ));
+    
+    
     $q.all(promises)
             .then(function () {
         $scope.isLoaded = true;
