@@ -6,6 +6,11 @@ app.config([
         $urlRouterProvider.otherwise('/');
         
         $stateProvider
+            .state('pivalidation',
+                {
+            url: '/pivalidation/:piId/:UserId',
+            templateUrl: 'App/Views/pivalidation.html'
+        })
             .state('identification',
                 {
             url: '/identification',

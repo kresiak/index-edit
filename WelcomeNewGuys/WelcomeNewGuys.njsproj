@@ -35,6 +35,7 @@
     <Compile Include="public\app\Controllers\mainController.js" />
     <Compile Include="public\app\Controllers\MyGiga\identificationController.js" />
     <Compile Include="public\app\Controllers\MyGiga\userinfoController.js" />
+    <Compile Include="public\app\Controllers\pivalidationController.js" />
     <Compile Include="public\app\Controllers\presentationController.js" />
     <Compile Include="public\app\Controllers\welcomeController.js" />
     <Compile Include="public\app\Controllers\Welcome\pageAskEmailController.js" />
@@ -64,6 +65,7 @@
     <Content Include="public\app\Views\examen.html" />
     <Content Include="public\app\Views\MyGiga\identification.html" />
     <Content Include="public\app\Views\MyGiga\userinfo.html" />
+    <Content Include="public\app\Views\pivalidation.html" />
     <Content Include="public\app\Views\presentation.html" />
     <Content Include="public\app\Views\Presentations\EveryDayGiga.html" />
     <Content Include="public\app\Views\Presentations\LegalGiga.html" />

@@ -1,0 +1,118 @@
+﻿<div ng-controller="pivalidationController">
+    <div class="panel-heading">
+        <h2>{{piFullname}}, we need your help</h2>
+    </div>
+
+    <div class="panel-body" ng-if="isLoaded">
+        <div class="row rowdistant">
+            <div class="col-sm-6 vcenter">
+                <h5><b>{{userFullname}}</b> has introduced a demand to join GIGA under your supervision. Do you confirm the validity of this demand?</h5>
+            </div>
+            <div class="col-sm-5 vcenter">
+                <div class="row">
+                    <div class="col-sm-12">
+                        <div class="radio">
+                            <label><input type="radio" ng-model="userAllowMode" value="yes">Yes, he is allowed to join</label>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-sm-12">
+                        <div class="radio">
+                            <label><input type="radio" ng-model="userAllowMode" value="no">No, this is not correct</label>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+        <div ng-show="userAllowMode==='yes'">
+            <div class="row rowdistant">
+                <div class="col-sm-6 vcenter">
+                    <h5>Will you provide {{userFullname}} with a computer funded by the University?</h5>
+                </div>
+                <div class="col-sm-5 vcenter">
+                    <div class="row">
+                        <div class="col-sm-12">
+                            <div class="radio">
+                                <label><input type="radio" ng-model="userWillReceiveComputer" value="yes">Yes</label>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-sm-12">
+                            <div class="radio">
+                                <label><input type="radio" ng-model="userWillReceiveComputer" value="no">No</label>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+            <div class="row rowdistant">
+                <div class="col-sm-6 vcenter">
+                    <h5>Do you give {{userFullname}} permission to order products by means of the KRINO system and under what regime?</h5>
+                </div>
+                <div class="col-sm-5 vcenter">
+                    <div class="row">
+                        <div class="col-sm-12">
+                            <div class="radio">
+                                <label><input type="radio" ng-model="userCanKrino" value="yes">Yes, in an unrestricted way</label>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-sm-12">
+                            <div class="radio">
+                                <label><input type="radio" ng-model="userCanKrino" value="junior">Yes, as a junior user</label>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-sm-12">
+                            <div class="radio">
+                                <label><input type="radio" ng-model="userCanKrino" value="no">No</label>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+            </div>            
+            <div class="row rowdistant">
+                <div class="col-sm-6 vcenter">
+                    <h5>What ratio of laboratory versus non-laboratory work will be applicable to {{userFullname}}?</h5>
+                </div>
+                <div class="col-sm-5 vcenter">
+                    <div class="row">
+                        <div class="col-sm-12">
+                            <div class="radio">
+                                <label><input type="radio" ng-model="userLaboRatio" value="0">100% non laboratory work</label>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-sm-12">
+                            <div class="radio">
+                                <label><input type="radio" ng-model="userLaboRatio" value="50">50% / 50%</label>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-sm-12">
+                            <div class="radio">
+                                <label><input type="radio" ng-model="userLaboRatio" value="100">100% laboratory work</label>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-sm-12">
+            <button ng-click="gotoEnd()" class="btn btn-danger">Submit</button>
+        </div>
+    </div>
+</div>
