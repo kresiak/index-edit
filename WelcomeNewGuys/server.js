@@ -116,6 +116,33 @@ app.post("/service/:type", function (req, res) {
                 }
             });
             break;
+        case 'UpdatePiAnswer':
+            var userId = parameter.userId;
+            var piId = parameter.piId;
+            var piAnswer = parameter.piAnswer;
+            if (piAnswer.AllowMode === 'no') {
+                piAnswer = {'AllowMode': 'no', dateUpdate: new Date()}; // delete all other fields
+            }
+            
+            db.collection('Employees').findOne({ _id: new ObjectID(userId) }, function (err, doc) {
+                if (err) {
+                    handleError(res, err.message, "Failed to get Employee");
+                } else {
+                    if (doc) {
+                        doc.piAnswers = doc.piAnswers || {};
+                        doc.piAnswers[piId] = piAnswer;
+                        
+                        db.collection('Employees').updateOne({ _id: new ObjectID(userId) }, doc, function (err, doc) {
+                            if (err) {
+                                handleError(res, err.message, "Failed to update " + req.params.type);
+                            } else {
+                                res.status(204).end();
+                            }
+                        });
+                    }
+                }
+            });
+            break;
         default:
     }
 });

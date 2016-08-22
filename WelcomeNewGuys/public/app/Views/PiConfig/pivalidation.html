@@ -12,21 +12,21 @@
                 <div class="row">
                     <div class="col-sm-12">
                         <div class="radio">
-                            <label><input type="radio" ng-model="userAllowMode" value="yes">Yes, he is allowed to join</label>
+                            <label><input type="radio" ng-model="answersByPi.AllowMode" value="yes">Yes, he is allowed to join</label>
                         </div>
                     </div>
                 </div>
                 <div class="row">
                     <div class="col-sm-12">
                         <div class="radio">
-                            <label><input type="radio" ng-model="userAllowMode" value="no">No, this is not correct</label>
+                            <label><input type="radio" ng-model="answersByPi.AllowMode" value="no">No, this is not correct</label>
                         </div>
                     </div>
                 </div>
 
             </div>
         </div>
-        <div ng-show="userAllowMode==='yes'">
+        <div ng-show="answersByPi.AllowMode==='yes'">
             <div class="row rowdistant">
                 <div class="col-sm-6 vcenter">
                     <h5>Will you provide {{userFullname}} with a computer funded by the University?</h5>
@@ -35,14 +35,14 @@
                     <div class="row">
                         <div class="col-sm-12">
                             <div class="radio">
-                                <label><input type="radio" ng-model="userWillReceiveComputer" value="yes">Yes</label>
+                                <label><input type="radio" ng-model="answersByPi.WillReceiveComputer" value="yes">Yes</label>
                             </div>
                         </div>
                     </div>
                     <div class="row">
                         <div class="col-sm-12">
                             <div class="radio">
-                                <label><input type="radio" ng-model="userWillReceiveComputer" value="no">No</label>
+                                <label><input type="radio" ng-model="answersByPi.WillReceiveComputer" value="no">No</label>
                             </div>
                         </div>
                     </div>
@@ -57,21 +57,21 @@
                     <div class="row">
                         <div class="col-sm-12">
                             <div class="radio">
-                                <label><input type="radio" ng-model="userCanKrino" value="yes">Yes, in an unrestricted way</label>
+                                <label><input type="radio" ng-model="answersByPi.KrinoMode" value="yes">Yes, in an unrestricted way</label>
                             </div>
                         </div>
                     </div>
                     <div class="row">
                         <div class="col-sm-12">
                             <div class="radio">
-                                <label><input type="radio" ng-model="userCanKrino" value="junior">Yes, as a junior user</label>
+                                <label><input type="radio" ng-model="answersByPi.KrinoMode" value="junior">Yes, as a junior user</label>
                             </div>
                         </div>
                     </div>
                     <div class="row">
                         <div class="col-sm-12">
                             <div class="radio">
-                                <label><input type="radio" ng-model="userCanKrino" value="no">No</label>
+                                <label><input type="radio" ng-model="answersByPi.KrinoMode" value="no">No</label>
                             </div>
                         </div>
                     </div>
@@ -86,21 +86,21 @@
                     <div class="row">
                         <div class="col-sm-12">
                             <div class="radio">
-                                <label><input type="radio" ng-model="userLaboRatio" value="0">100% non laboratory work</label>
+                                <label><input type="radio" ng-model="answersByPi.LaboRatio" value="0">100% non laboratory work</label>
                             </div>
                         </div>
                     </div>
                     <div class="row">
                         <div class="col-sm-12">
                             <div class="radio">
-                                <label><input type="radio" ng-model="userLaboRatio" value="50">50% / 50%</label>
+                                <label><input type="radio" ng-model="answersByPi.LaboRatio" value="50">50% / 50%</label>
                             </div>
                         </div>
                     </div>
                     <div class="row">
                         <div class="col-sm-12">
                             <div class="radio">
-                                <label><input type="radio" ng-model="userLaboRatio" value="100">100% laboratory work</label>
+                                <label><input type="radio" ng-model="answersByPi.LaboRatio" value="100">100% laboratory work</label>
                             </div>
                         </div>
                     </div>
@@ -110,12 +110,13 @@
             <div class="row rowdistant">
                 <div class="col-sm-6 vcenter">
                     <h5>Which GIGA platform will {{userFullname}} need to use?</h5>
+                    <p>(you can select one or several buttons)</p>
                 </div>
                 <div class="col-sm-5 vcenter">
                     <div class="row">
                         <div class="col-sm-12">
                             <div class="btn-group-vertical">
-                                <label ng-repeat="platform in platforms" class="btn btn-default" ng-model="user.allowedPlatforms[platform._id]" uib-btn-checkbox>{{platform.Nom}}</label>
+                                <label ng-repeat="platform in platforms" class="btn btn-default" ng-model="answersByPi.allowedPlatforms[platform._id]" uib-btn-checkbox>{{platform.Nom}}</label>
                             </div>
                         </div>
                     </div>
@@ -125,12 +126,13 @@
             <div class="row rowdistant">
                 <div class="col-sm-6 vcenter">
                     <h5>To which GIGA facilities will {{userFullname}} need access?</h5>
+                    <p>(you can select one or several buttons)</p>
                 </div>
                 <div class="col-sm-5 vcenter">
                     <div class="row">
                         <div class="col-sm-12">
                             <div class="btn-group-vertical">
-                                <label ng-repeat="facility in facilities" class="btn btn-default" ng-model="user.allowedPlatforms[facility._id]" uib-btn-checkbox>{{facility.Nom}}</label>
+                                <label ng-repeat="facility in facilities" class="btn btn-default" ng-model="answersByPi.allowedFacilities[facility._id]" uib-btn-checkbox>{{facility.Nom}}</label>
                             </div>
                         </div>
                     </div>

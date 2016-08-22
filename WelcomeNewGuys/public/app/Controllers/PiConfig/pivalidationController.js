@@ -15,10 +15,14 @@ app.controller("pivalidationController",
         }
     ));
     
-    promises.push(dataService.crudGetRecordById('Employees', $stateParams.UserId).then(
+    promises.push(dataService.crudGetRecordById('Employees', $stateParams.userId).then(
         function (response) {
             $scope.user = response.data;
-            $scope.user.allowedPlatforms = {};
+            $scope.user.piAnswers = $scope.user.piAnswers || {};
+            $scope.answersByPi = $scope.user.piAnswers[$stateParams.piId] || {};             
+            $scope.answersByPi.allowedPlatforms = $scope.answersByPi.allowedPlatforms || {};
+            $scope.answersByPi.allowedFacilities = $scope.answersByPi.allowedFacilities || {};
+            
             $scope.userFullname = $scope.user.Prenom + ' ' + $scope.user.Nom;
         }
     ));
@@ -42,6 +46,8 @@ app.controller("pivalidationController",
     });
     
     $scope.gotoEnd = function () {
+        $scope.answersByPi.dateUpdate = new Date();
+        dataService.callWebService('UpdatePiAnswer', {'userId': $stateParams.userId, 'piId': $stateParams.piId, 'piAnswer' : $scope.answersByPi} );
         //$state.go('examen');
     }
     

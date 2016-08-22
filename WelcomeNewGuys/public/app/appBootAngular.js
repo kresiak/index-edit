@@ -8,8 +8,8 @@ app.config([
         $stateProvider
             .state('pivalidation',
                 {
-            url: '/pivalidation/:piId/:UserId',
-            templateUrl: 'App/Views/pivalidation.html'
+            url: '/pivalidation/:piId/:userId',
+            templateUrl: 'App/Views/PiConfig/pivalidation.html'
         })
             .state('identification',
                 {
@@ -24,22 +24,22 @@ app.config([
             .state('presentation',
                 {
             url: '/presentation/:presentationId/:UserId',
-            templateUrl: 'App/Views/presentation.html'
+            templateUrl: 'App/Views/Presentations/presentation.html'
         })
             .state('examen',
                 {
             url: '/examen',
-            templateUrl: 'App/Views/examen.html'
+            templateUrl: 'App/Views/Presentations/examen.html'
         })
             .state('score',
                 {
             url: '/score',
-            templateUrl: 'App/Views/score.html'
+            templateUrl: 'App/Views/Presentations/score.html'
         })
             .state('welcome',
                 {
             url: '/welcome',
-            templateUrl: 'App/Views/welcome.html'
+            templateUrl: 'App/Views/Welcome/welcome.html'
         })
             .state('welcome.director',
                 {
